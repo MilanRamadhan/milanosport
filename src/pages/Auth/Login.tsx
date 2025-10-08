@@ -34,15 +34,18 @@ const Login: React.FC = () => {
         role: response.data.role,
       });
 
-      // Legacy support - untuk komponen yang masih menggunakan localStorage lama
-      localStorage.setItem("isLoggedIn", "true");
-      localStorage.setItem("userEmail", email);
-      localStorage.setItem("userRole", response.data.role?.toString() || "false");
-
       // Cek apakah ada halaman redirect yang tersimpan
-      const redirectTo = localStorage.getItem("redirectAfterLogin") || "/";
+      const redirectPath = localStorage.getItem("redirectAfterLogin");
       localStorage.removeItem("redirectAfterLogin");
-      navigate(redirectTo);
+
+      // Redirect ke halaman yang disimpan atau ke landing page
+      // Jangan redirect ke /profile atau /login atau /register
+      if (redirectPath && redirectPath !== "/login" && redirectPath !== "/register" && redirectPath !== "/profile") {
+        navigate(redirectPath);
+      } else {
+        // Default redirect ke home/landing page
+        navigate("/");
+      }
     } catch (err: any) {
       setError(err.message || "Terjadi kesalahan saat login");
       console.error("Login error:", err);

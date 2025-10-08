@@ -40,8 +40,11 @@ const Profile: React.FC = () => {
   // Load profile data from backend
   useEffect(() => {
     const loadProfile = async () => {
+      // ProtectedRoute sudah handle authentication check
+      // Jadi kita tidak perlu cek user di sini lagi
       if (!user) {
-        navigate("/login");
+        // Jika user null, berarti sedang dalam proses logout
+        // Biarkan handleLogout yang handle redirect
         return;
       }
 
@@ -215,8 +218,12 @@ const Profile: React.FC = () => {
 
     try {
       setIsLoggingOut(true);
+
+      // Navigate dulu sebelum logout untuk menghindari ProtectedRoute redirect
+      navigate("/", { replace: true });
+
+      // Lalu baru panggil logout untuk clear state
       await logout();
-      navigate("/");
     } catch (error: any) {
       console.error("Error during logout:", error);
       setMessage({

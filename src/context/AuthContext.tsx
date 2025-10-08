@@ -15,66 +15,88 @@ interface AuthContextType {
   logout: () => Promise<void>;
   isAuthenticated: boolean;
   isAdmin: boolean;
+  isLoading: boolean; // Add loading state
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const useAuth = () => {
-  const context = useContext(AuthContext);
-  if (context === undefined) {
-    throw new Error("useAuth must be used within an AuthProvider");
-  }
-  return context;
+  const ctx = useContext(AuthContext);
+  if (!ctx) throw new Error("useAuth must be used within an AuthProvider");
+  return ctx;
 };
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [token, setToken] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(true); // Add loading state
+
+  // Session expiry: 24 jam (dalam milidetik)
+  const SESSION_DURATION = 24 * 60 * 60 * 1000; // 24 jam
 
   useEffect(() => {
     // Check for stored authentication data on app load
-    const storedToken = localStorage.getItem("authToken");
-    const storedUser = localStorage.getItem("userData");
+    const storedToken = sessionStorage.getItem("authToken");
+    const storedUser = sessionStorage.getItem("userData");
+    const loginTimestamp = sessionStorage.getItem("loginTimestamp");
 
-    if (storedToken && storedUser) {
+    if (storedToken && storedUser && loginTimestamp) {
       try {
         const userData = JSON.parse(storedUser);
-        setToken(storedToken);
-        setUser(userData);
+        const loginTime = parseInt(loginTimestamp);
+        const currentTime = new Date().getTime();
+        const timeElapsed = currentTime - loginTime;
+
+        // Cek apakah session sudah expired (lebih dari 24 jam)
+        if (timeElapsed > SESSION_DURATION) {
+          // Session expired, clear data
+          console.log("Session expired, please login again");
+          sessionStorage.removeItem("authToken");
+          sessionStorage.removeItem("userData");
+          sessionStorage.removeItem("loginTimestamp");
+          localStorage.removeItem("redirectAfterLogin");
+        } else {
+          // Session masih valid, restore user data
+          setToken(storedToken);
+          setUser(userData);
+        }
       } catch (error) {
         // Clear invalid stored data
-        localStorage.removeItem("authToken");
-        localStorage.removeItem("userData");
+        sessionStorage.removeItem("authToken");
+        sessionStorage.removeItem("userData");
+        sessionStorage.removeItem("loginTimestamp");
       }
     }
+
+    // Set loading to false after checking
+    setIsLoading(false);
   }, []);
 
   const login = (newToken: string, userData: User) => {
+    const loginTime = new Date().getTime();
+
     setToken(newToken);
     setUser(userData);
-    localStorage.setItem("authToken", newToken);
-    localStorage.setItem("userData", JSON.stringify(userData));
+    sessionStorage.setItem("authToken", newToken);
+    sessionStorage.setItem("userData", JSON.stringify(userData));
+    sessionStorage.setItem("loginTimestamp", loginTime.toString());
   };
 
   const logout = async () => {
     try {
-      // Call backend logout if user exists
       if (user) {
         await authApi.logout(user.id);
       }
     } catch (error) {
       console.error("Logout error:", error);
-      // Continue with local logout even if backend call fails
     } finally {
-      // Clear local state and storage
       setToken(null);
       setUser(null);
-      localStorage.removeItem("authToken");
-      localStorage.removeItem("userData");
-      // Legacy support
-      localStorage.removeItem("isLoggedIn");
-      localStorage.removeItem("userEmail");
-      localStorage.removeItem("userRole");
+      sessionStorage.removeItem("authToken");
+      sessionStorage.removeItem("userData");
+      sessionStorage.removeItem("loginTimestamp");
+      localStorage.removeItem("redirectAfterLogin");
+      // Navigation will be handled by the component that calls logout
     }
   };
 
@@ -85,26 +107,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     logout,
     isAuthenticated: !!user && !!token,
     isAdmin: user?.role === true,
+    isLoading, // Add loading to context
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
-
-// Demo login function for development/testing
-export const demoLogin = (isAdmin: boolean = false) => {
-  const demoUser: User = {
-    id: isAdmin ? "admin123" : "user123",
-    name: isAdmin ? "Admin User" : "Demo User",
-    email: isAdmin ? "admin@milanosport.com" : "user@example.com",
-    role: isAdmin,
-  };
-
-  const demoToken = `demo-token-${Date.now()}`;
-
-  localStorage.setItem("authToken", demoToken);
-  localStorage.setItem("userData", JSON.stringify(demoUser));
-
-  return { token: demoToken, user: demoUser };
-};
-
-export default AuthContext;

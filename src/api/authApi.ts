@@ -5,28 +5,26 @@ import type { InternalAxiosRequestConfig } from "axios";
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://192.168.1.60:5000/api";
 
 // Create axios instance with default config
-const api = axios.create({
+export const api = axios.create({
   baseURL: API_BASE_URL,
-  headers: {
-    "Content-Type": "application/json",
-  },
+  headers: { "Content-Type": "application/json" },
 });
 
-// Add token to requests if available
+// ✅ Gunakan sessionStorage agar sesi tidak persist setelah browser/tab ditutup
 api.interceptors.request.use((config: InternalAxiosRequestConfig) => {
-  const token = localStorage.getItem("authToken");
+  const token = sessionStorage.getItem("authToken"); // <-- pindah dari localStorage ke sessionStorage
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
   return config;
 });
 
-// Auth API interfaces
+// ====== Interfaces ======
 export interface RegisterRequest {
   name: string;
   email: string;
   password: string;
-  role: boolean; // true for admin, false for regular user
+  role: boolean; // true admin, false user
 }
 
 export interface LoginRequest {
@@ -86,9 +84,8 @@ export interface LogoutRequest {
   userId: string;
 }
 
-// Auth API functions
+// ====== API functions ======
 export const authApi = {
-  // Register new user
   register: async (data: RegisterRequest): Promise<AuthResponse> => {
     try {
       const response = await api.post("/auth/register", data);
@@ -98,7 +95,6 @@ export const authApi = {
     }
   },
 
-  // Login user
   login: async (data: LoginRequest): Promise<AuthResponse> => {
     try {
       const response = await api.post("/auth/login", data);
@@ -108,7 +104,6 @@ export const authApi = {
     }
   },
 
-  // Logout user
   logout: async (userId: string): Promise<{ status: number; message: string }> => {
     try {
       const response = await api.post("/auth/logout", { userId });
@@ -118,7 +113,6 @@ export const authApi = {
     }
   },
 
-  // Get user profile
   getProfile: async (): Promise<ProfileResponse> => {
     try {
       const response = await api.get("/auth/profile");
@@ -128,7 +122,6 @@ export const authApi = {
     }
   },
 
-  // Update user profile
   updateProfile: async (data: UpdateProfileRequest): Promise<ProfileResponse> => {
     try {
       const response = await api.put("/auth/profile", data);
@@ -138,7 +131,6 @@ export const authApi = {
     }
   },
 
-  // Change password
   changePassword: async (data: ChangePasswordRequest): Promise<{ status: number; message: string }> => {
     try {
       const response = await api.put("/auth/change-password", data);

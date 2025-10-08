@@ -13,16 +13,8 @@ const AdminDashboard: React.FC = () => {
   const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
-    // Check if user is admin
-    const userRole = localStorage.getItem("userRole");
-    if (userRole !== "true") {
-      alert("Akses ditolak! Hanya admin yang dapat mengakses halaman ini.");
-      navigate("/");
-      return;
-    }
-
     fetchAllBookings();
-  }, [navigate]);
+  }, []);
 
   const fetchAllBookings = async () => {
     try {

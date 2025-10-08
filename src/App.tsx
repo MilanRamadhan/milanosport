@@ -5,6 +5,7 @@ import { Routes, Route } from "react-router-dom";
 
 import { Navbar } from "./components/common/Navbar";
 import { ProtectedRoute } from "./components/common/ProtectedRoute";
+import { AdminRoute } from "./context/AdminRoute.tsx";
 import Home from "./pages/Home.tsx"; // Pastikan path ini benar
 import AboutUs from "./pages/AboutUs.tsx"; // Pastikan path ini benar
 
@@ -100,11 +101,11 @@ const App: React.FC = () => {
       <Route
         path="/admin"
         element={
-          <ProtectedRoute>
+          <AdminRoute>
             <MainLayout>
               <AdminDashboard />
             </MainLayout>
-          </ProtectedRoute>
+          </AdminRoute>
         }
       />
       <Route path="/login" element={<Login />} />

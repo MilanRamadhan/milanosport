@@ -5,13 +5,13 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 import { Calendar, Trophy, DollarSign, Clock, MapPin, Phone } from "lucide-react";
 import { Navbar } from "../components/common/Navbar";
+import { useAuth } from "../context/AuthContext";
 import InfiniteScroll from "../components/common/InfiniteScroll";
 import "./Home.css";
 
 const Home: React.FC = () => {
   const navigate = useNavigate();
-  // Cek status login dari localStorage (atau ganti sesuai state management Anda)
-  const isLoggedIn = Boolean(localStorage.getItem("isLoggedIn"));
+  const { isAuthenticated } = useAuth();
 
   useEffect(() => {
     AOS.init({
@@ -130,7 +130,7 @@ const Home: React.FC = () => {
 
             <button
               onClick={() => {
-                if (isLoggedIn) {
+                if (isAuthenticated) {
                   navigate("/reservasi");
                 } else {
                   navigate("/login");
@@ -210,7 +210,7 @@ const Home: React.FC = () => {
           <p className="cta-subtitle">Jangan sampai kehabisan slot! Booking sekarang dan nikmati pengalaman bermain terbaik.</p>
           <button
             onClick={() => {
-              if (isLoggedIn) {
+              if (isAuthenticated) {
                 navigate("/reservasi");
               } else {
                 navigate("/login");

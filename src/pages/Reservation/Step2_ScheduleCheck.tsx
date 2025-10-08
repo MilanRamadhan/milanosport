@@ -13,7 +13,8 @@ interface TimeSlot {
 const generateDates = () => {
   const dates = [];
   const today = new Date();
-  for (let i = 0; i < 14; i++) {
+  // Batasi booking hanya 7 hari ke depan (sesuai backend)
+  for (let i = 0; i < 7; i++) {
     const date = new Date(today);
     date.setDate(today.getDate() + i);
     dates.push(date);

@@ -1,22 +1,19 @@
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { HashLink } from "react-router-hash-link";
+import { useAuth } from "../../context/AuthContext";
 import "./Navbar.css";
 
 export const Navbar: React.FC = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const { user } = useAuth();
+  const isLoggedIn = !!user;
+  const isAdmin = user?.role === true;
+
   const [isOpen, setIsOpen] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
-  const [isLoggedIn] = useState(() => {
-    // Check localStorage on initial render
-    return localStorage.getItem("isLoggedIn") === "true";
-  });
-  const [isAdmin, setIsAdmin] = useState(() => {
-    // Check if user is admin
-    return localStorage.getItem("userRole") === "true";
-  });
-  const location = useLocation();
 
   // Effect untuk mengontrol navbar scroll
   useEffect(() => {
@@ -46,7 +43,7 @@ export const Navbar: React.FC = () => {
     if (!isLoggedIn) {
       // Kalau belum login, arahkan ke login
       if (!location.pathname.includes("/login") && !location.pathname.includes("/register")) {
-        localStorage.setItem("redirectAfterLogin", location.pathname);
+        localStorage.setItem("redirectAfterLogin", location.pathname + location.hash);
       }
       navigate("/login");
     } else {
@@ -54,14 +51,6 @@ export const Navbar: React.FC = () => {
       navigate("/profile");
     }
   };
-
-  // Effect untuk cek perubahan status login
-  useEffect(() => {
-    localStorage.setItem("isLoggedIn", isLoggedIn.toString());
-    // Update admin status when login changes
-    const adminStatus = localStorage.getItem("userRole") === "true";
-    setIsAdmin(adminStatus);
-  }, [isLoggedIn]);
 
   return (
     <nav className={`navbar ${isVisible ? "navbar-visible" : "navbar-hidden"}`}>
