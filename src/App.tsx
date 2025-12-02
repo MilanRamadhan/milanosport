@@ -17,7 +17,12 @@ import MyBookings from "./pages/Reservation/MyBookings";
 import Login from "./pages/Auth/Login";
 import Register from "./pages/Auth/Register";
 import Profile from "./pages/Profile/Profile";
-import AdminDashboard from "./pages/Admin/AdminDashboard";
+import AdminLayout from "./pages/Admin/AdminLayout";
+import AdminHome from "./pages/Admin/AdminHome";
+import BookingsList from "./pages/Admin/BookingsList";
+import UsersManagement from "./pages/Admin/UsersManagement";
+import FinanceManagement from "./pages/Admin/FinanceManagement";
+import ActivityLogs from "./pages/Admin/ActivityLogs";
 
 // Layout component that includes Navbar
 const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -102,12 +107,24 @@ const App: React.FC = () => {
         path="/admin"
         element={
           <AdminRoute>
-            <MainLayout>
-              <AdminDashboard />
-            </MainLayout>
+            <AdminLayout />
           </AdminRoute>
         }
-      />
+      >
+        <Route index element={<AdminHome />} />
+        <Route path="bookings" element={<BookingsList />} />
+        <Route path="users" element={<UsersManagement />} />
+        <Route path="finance" element={<FinanceManagement />} />
+        <Route
+          path="analytics"
+          element={
+            <div style={{ padding: "40px", textAlign: "center" }}>
+              Analytics page - Coming soon
+            </div>
+          }
+        />
+        <Route path="logs" element={<ActivityLogs />} />
+      </Route>
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
       <Route

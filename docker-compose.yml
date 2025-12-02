@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    environment:
+      - MONGODB_URI=mongodb+srv://milanmulizar29:G91KKsCsqoPuW3zg@milan.eas2sqd.mongodb.net/milanosport?retryWrites=true&w=majority&appName=Milan
+      - JWT_SECRET=milanosportaceh
+      - PORT=5000
+    volumes:
+      - ./nginx.conf:/etc/nginx/http.d/default.conf
+      - ./src:/app/frontend/src
+      - ./public:/app/frontend/public
+    restart: always
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:80"]
+      interval: 30s
+      timeout: 10s
+      retries: 3git
