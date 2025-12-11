@@ -34,17 +34,25 @@ const Login: React.FC = () => {
         role: response.data.role,
       });
 
-      // Cek apakah ada halaman redirect yang tersimpan
-      const redirectPath = localStorage.getItem("redirectAfterLogin");
-      localStorage.removeItem("redirectAfterLogin");
-
-      // Redirect ke halaman yang disimpan atau ke landing page
-      // Jangan redirect ke /profile atau /login atau /register
-      if (redirectPath && redirectPath !== "/login" && redirectPath !== "/register" && redirectPath !== "/profile") {
-        navigate(redirectPath);
+      // Redirect berdasarkan role
+      if (response.data.role) {
+        // Jika admin, langsung ke dashboard admin
+        navigate("/admin");
       } else {
-        // Default redirect ke home/landing page
-        navigate("/");
+        // Jika user biasa, cek redirect path atau ke landing page
+        const redirectPath = localStorage.getItem("redirectAfterLogin");
+        localStorage.removeItem("redirectAfterLogin");
+
+        if (
+          redirectPath &&
+          redirectPath !== "/login" &&
+          redirectPath !== "/register" &&
+          redirectPath !== "/profile"
+        ) {
+          navigate(redirectPath);
+        } else {
+          navigate("/");
+        }
       }
     } catch (err: any) {
       setError(err.message || "Terjadi kesalahan saat login");
@@ -65,14 +73,19 @@ const Login: React.FC = () => {
         >
           <div className="auth-image-content">
             <h2 className="auth-image-title">Selamat Datang Kembali</h2>
-            <p className="auth-image-text">Nikmati kemudahan reservasi lapangan olahraga favorit Anda dengan Milano Sport</p>
+            <p className="auth-image-text">
+              Nikmati kemudahan reservasi lapangan olahraga favorit Anda dengan
+              Milano Sport
+            </p>
           </div>
         </div>
 
         <div className="auth-form-section">
           <div className="auth-header">
             <h2 className="auth-title">Login</h2>
-            <p className="auth-subtitle">Masuk ke akun Anda untuk melanjutkan</p>
+            <p className="auth-subtitle">
+              Masuk ke akun Anda untuk melanjutkan
+            </p>
           </div>
 
           <form className="auth-form" onSubmit={handleSubmit}>
@@ -80,14 +93,28 @@ const Login: React.FC = () => {
               <label htmlFor="email" className="form-label">
                 Email
               </label>
-              <input id="login-email" type="email" className="form-input" placeholder="Masukkan email anda" value={email} onChange={(e) => setEmail(e.target.value)} />
+              <input
+                id="login-email"
+                type="email"
+                className="form-input"
+                placeholder="Masukkan email anda"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
             </div>
 
             <div className="form-group">
               <label htmlFor="password" className="form-label">
                 Password
               </label>
-              <input id="login-password" type="password" className="form-input" placeholder="Masukkan password" value={password} onChange={(e) => setPassword(e.target.value)} />
+              <input
+                id="login-password"
+                type="password"
+                className="form-input"
+                placeholder="Masukkan password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
             </div>
 
             {error && <p className="error-message">{error}</p>}
