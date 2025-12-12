@@ -3,22 +3,91 @@ import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import {
-  Calendar,
-  Trophy,
-  DollarSign,
-  Clock,
-  MapPin,
-  Phone,
-} from "lucide-react";
+import { Calendar, Trophy, DollarSign, Clock, MapPin, Phone } from "lucide-react";
 import { Navbar } from "../components/common/Navbar";
 import InfiniteScroll from "../components/common/InfiniteScroll";
+import { useAuth } from "../context/AuthContext";
 import "./Home.css";
+
+// Static data - moved outside component to avoid recreation
+const sports = [
+  { name: "Mini Soccer", emoji: "⚽" },
+  { name: "Futsal", emoji: "🥅" },
+  { name: "Badminton", emoji: "🏸" },
+  { name: "Padel", emoji: "🎾" },
+];
+
+const fieldsData = [
+  {
+    id: 1,
+    icon: "⚽",
+    title: "Mini Soccer",
+    description: "Lapangan rumput sintetis premium dengan pencahayaan LED berkualitas tinggi.",
+    priceFrom: "150.000",
+    category: "mini-soccer",
+    image: "/assets/mini-soccer_game.jpg",
+  },
+  {
+    id: 2,
+    icon: "🥅",
+    title: "Futsal",
+    description: "Lapangan indoor berkualitas tinggi dengan lantai vinyl anti-slip terbaik.",
+    priceFrom: "120.000",
+    category: "futsal",
+    image: "/assets/futsal_game.jpg",
+  },
+  {
+    id: 3,
+    icon: "🏸",
+    title: "Badminton",
+    description: "Court indoor ber-AC dengan lantai karpet standar internasional BWF.",
+    priceFrom: "80.000",
+    category: "badminton",
+    image: "/assets/badminton_game.jpg",
+  },
+  {
+    id: 4,
+    icon: "🎾",
+    title: "Padel",
+    description: "Lapangan padel modern dengan dinding kaca tempered dan net profesional.",
+    priceFrom: "200.000",
+    category: "padel",
+    image: "/assets/padel.jpg",
+  },
+];
+
+const items = [
+  {
+    content: <img src="/assets/mini-soccer.jpg" alt="Mini Soccer" className="carousel-img" />,
+  },
+  {
+    content: <img src="/assets/futsal.jpg" alt="Futsal" className="carousel-img" />,
+  },
+  {
+    content: <img src="/assets/badminton_new.jpg" alt="Badminton" className="carousel-img" />,
+  },
+  {
+    content: <img src="/assets/padel.jpg" alt="Padel" className="carousel-img" />,
+  },
+];
+
+// FeatureCard component - moved outside to avoid recreation
+const FeatureCard: React.FC<{
+  title: string;
+  icon: React.ReactNode;
+  description: string;
+  delay: number;
+}> = ({ title, icon, description, delay }) => (
+  <div className="feature-card" data-aos="fade-up" data-aos-delay={delay}>
+    <div className="feature-icon">{icon}</div>
+    <h3 className="feature-title">{title}</h3>
+    <p className="feature-description">{description}</p>
+  </div>
+);
 
 const Home: React.FC = () => {
   const navigate = useNavigate();
-  // Cek status login dari localStorage (atau ganti sesuai state management Anda)
-  const isLoggedIn = Boolean(localStorage.getItem("isLoggedIn"));
+  const { isAuthenticated } = useAuth();
 
   useEffect(() => {
     AOS.init({
@@ -28,108 +97,13 @@ const Home: React.FC = () => {
     });
   }, []);
 
-  const FeatureCard: React.FC<{
-    title: string;
-    icon: React.ReactNode;
-    description: string;
-    delay: number;
-  }> = ({ title, icon, description, delay }) => (
-    <div className="feature-card" data-aos="fade-up" data-aos-delay={delay}>
-      <div className="feature-icon">{icon}</div>
-      <h3 className="feature-title">{title}</h3>
-      <p className="feature-description">{description}</p>
-    </div>
-  );
-
-  const sports = [
-    { name: "Mini Soccer", emoji: "⚽" },
-    { name: "Futsal", emoji: "🥅" },
-    { name: "Badminton", emoji: "🏸" },
-    { name: "Padel", emoji: "🎾" },
-  ];
-
-  const items = [
-    {
-      content: (
-        <img
-          src="/assets/mini-soccer.jpg"
-          alt="Mini Soccer"
-          style={{ width: "90%", borderRadius: "45px", objectFit: "cover" }}
-        />
-      ),
-    },
-    {
-      content: (
-        <img
-          src="/assets/futsal.jpg"
-          alt="Futsal"
-          style={{ width: "90%", borderRadius: "45px", objectFit: "cover" }}
-        />
-      ),
-    },
-    {
-      content: (
-        <img
-          src="/assets/badminton_new.jpg"
-          alt="Badminton"
-          style={{ width: "90%", borderRadius: "45px", objectFit: "cover" }}
-        />
-      ),
-    },
-    {
-      content: (
-        <img
-          src="/assets/padel.jpg"
-          alt="Padel"
-          style={{ width: "90%", borderRadius: "45px", objectFit: "cover" }}
-        />
-      ),
-    },
-  ];
-
-  // Data Lapangan
-  const fieldsData = [
-    {
-      id: 1,
-      icon: "⚽",
-      title: "Mini Soccer",
-      description:
-        "Lapangan rumput sintetis premium dengan pencahayaan LED berkualitas tinggi.",
-      priceFrom: "150.000",
-      category: "mini-soccer",
-      image: "/assets/mini-soccer_game.jpg",
-    },
-    {
-      id: 2,
-      icon: "🥅",
-      title: "Futsal",
-      description:
-        "Lapangan indoor berkualitas tinggi dengan lantai vinyl anti-slip terbaik.",
-      priceFrom: "120.000",
-      category: "futsal",
-      image: "/assets/futsal_game.jpg",
-    },
-    {
-      id: 3,
-      icon: "🏸",
-      title: "Badminton",
-      description:
-        "Court indoor ber-AC dengan lantai karpet standar internasional BWF.",
-      priceFrom: "80.000",
-      category: "badminton",
-      image: "/assets/badminton_game.jpg",
-    },
-    {
-      id: 4,
-      icon: "🎾",
-      title: "Padel",
-      description:
-        "Lapangan padel modern dengan dinding kaca tempered dan net profesional.",
-      priceFrom: "200.000",
-      category: "padel",
-      image: "/assets/padel.jpg",
-    },
-  ];
+  const handleBookingClick = (category?: string) => {
+    if (isAuthenticated) {
+      navigate(category ? `/reservasi?category=${category}` : "/reservasi");
+    } else {
+      navigate("/login");
+    }
+  };
 
   return (
     <div className="home-container">
@@ -148,8 +122,7 @@ const Home: React.FC = () => {
               <span className="hero-title-gradient">Semua Lapangan</span>
             </h1>
             <p className="hero-subtitle">
-              Reservasi cepat dan mudah untuk Mini Soccer, Futsal, Badminton &
-              Padel.
+              Reservasi cepat dan mudah untuk Mini Soccer, Futsal, Badminton & Padel.
               <br />
               Kapan saja, di mana saja.
             </p>
@@ -164,16 +137,7 @@ const Home: React.FC = () => {
               ))}
             </div>
 
-            <button
-              onClick={() => {
-                if (isLoggedIn) {
-                  navigate("/reservasi");
-                } else {
-                  navigate("/login");
-                }
-              }}
-              className="hero-btn"
-            >
+            <button onClick={() => handleBookingClick()} className="hero-btn">
               Reservasi Sekarang
             </button>
           </div>
@@ -181,16 +145,7 @@ const Home: React.FC = () => {
           {/* Image Section */}
           <div className="hero-image glass-panel">
             <div style={{ height: "500px", position: "relative" }}>
-              <InfiniteScroll
-                items={items}
-                isTilted={true}
-                tiltDirection="left"
-                autoplay={true}
-                autoplaySpeed={2}
-                autoplayDirection="down"
-                pauseOnHover={true}
-                itemMinHeight={200}
-              />
+              <InfiniteScroll items={items} isTilted={true} tiltDirection="left" autoplay={true} autoplaySpeed={2} autoplayDirection="down" pauseOnHover={true} itemMinHeight={200} />
             </div>
           </div>
         </div>
@@ -202,33 +157,14 @@ const Home: React.FC = () => {
           <h2 className="section-title-feature" data-aos="fade-up">
             Mengapa Memilih MilanoSport?
           </h2>
-          <p
-            className="section-subtitle"
-            data-aos="fade-up"
-            data-aos-delay="100"
-          >
+          <p className="section-subtitle" data-aos="fade-up" data-aos-delay="100">
             Kemudahan dan kenyamanan untuk pengalaman booking terbaik Anda
           </p>
 
           <div className="features-grid">
-            <FeatureCard
-              icon={<Trophy className="icon-white" />}
-              title="Fasilitas Terlengkap"
-              description="Mini Soccer, Futsal, Badminton, dan Padel dalam satu platform yang terintegrasi."
-              delay={200}
-            />
-            <FeatureCard
-              icon={<Calendar className="icon-white" />}
-              title="Jadwal Real-time"
-              description="Cek ketersediaan langsung tanpa perlu telepon. Transparansi penuh untuk Anda."
-              delay={300}
-            />
-            <FeatureCard
-              icon={<DollarSign className="icon-white" />}
-              title="Harga Terbaik"
-              description="Harga kompetitif dan transparan di seluruh wilayah Aceh. Tidak ada biaya tersembunyi."
-              delay={400}
-            />
+            <FeatureCard icon={<Trophy className="icon-white" />} title="Fasilitas Terlengkap" description="Mini Soccer, Futsal, Badminton, dan Padel dalam satu platform yang terintegrasi." delay={200} />
+            <FeatureCard icon={<Calendar className="icon-white" />} title="Jadwal Real-time" description="Cek ketersediaan langsung tanpa perlu telepon. Transparansi penuh untuk Anda." delay={300} />
+            <FeatureCard icon={<DollarSign className="icon-white" />} title="Harga Terbaik" description="Harga kompetitif dan transparan di seluruh wilayah Aceh. Tidak ada biaya tersembunyi." delay={400} />
           </div>
         </div>
       </section>
@@ -238,13 +174,8 @@ const Home: React.FC = () => {
           {/* Section Header */}
           <div className="section-header">
             <p className="section-subtitle">Pilihan Lapangan</p>
-            <h2 className="section-title-feature1">
-              Temukan Lapangan Favoritmu
-            </h2>
-            <p className="section-description">
-              Berbagai pilihan lapangan olahraga dengan fasilitas terbaik dan
-              harga terjangkau
-            </p>
+            <h2 className="section-title-feature1">Temukan Lapangan Favoritmu</h2>
+            <p className="section-description">Berbagai pilihan lapangan olahraga dengan fasilitas terbaik dan harga terjangkau</p>
           </div>
 
           {/* Field Cards Grid */}
@@ -253,11 +184,7 @@ const Home: React.FC = () => {
               <div key={field.id} className="field-card">
                 {/* Gambar Lapangan */}
                 <div className="field-card-image">
-                  <img
-                    src={field.image}
-                    alt={field.title}
-                    className="field-image"
-                  />
+                  <img src={field.image} alt={field.title} className="field-image" />
                 </div>
 
                 {/* Content */}
@@ -270,6 +197,11 @@ const Home: React.FC = () => {
                   <span className="price-amount">Rp {field.priceFrom}</span>
                   <span className="price-period">/jam</span>
                 </div>
+
+                {/* Booking Button */}
+                <button onClick={() => handleBookingClick(field.category)} className="field-booking-btn" aria-label={`Booking ${field.title}`}>
+                  Lihat Jadwal & Booking
+                </button>
               </div>
             ))}
           </div>
@@ -280,20 +212,8 @@ const Home: React.FC = () => {
       <section className="cta-section warna-cta" data-aos="zoom-in">
         <div className="cta-content">
           <h2 className="cta-title">Siap Amankan Lapangan Anda?</h2>
-          <p className="cta-subtitle">
-            Jangan sampai kehabisan slot! Booking sekarang dan nikmati
-            pengalaman bermain terbaik.
-          </p>
-          <button
-            onClick={() => {
-              if (isLoggedIn) {
-                navigate("/reservasi");
-              } else {
-                navigate("/login");
-              }
-            }}
-            className="cta-btn"
-          >
+          <p className="cta-subtitle">Jangan sampai kehabisan slot! Booking sekarang dan nikmati pengalaman bermain terbaik.</p>
+          <button onClick={() => handleBookingClick()} className="cta-btn">
             <span>Cek Jadwal & Booking</span>
           </button>
         </div>
@@ -305,20 +225,12 @@ const Home: React.FC = () => {
           <h2 className="section-title-feature" data-aos="fade-up">
             Lokasi Kami
           </h2>
-          <p
-            className="section-subtitle"
-            data-aos="fade-up"
-            data-aos-delay="100"
-          >
+          <p className="section-subtitle" data-aos="fade-up" data-aos-delay="100">
             Temukan kami di lokasi strategis di Banda Aceh
           </p>
 
           <div className="location-container">
-            <div
-              className="location-info glass-panel"
-              data-aos="fade-right"
-              data-aos-delay="200"
-            >
+            <div className="location-info glass-panel" data-aos="fade-right" data-aos-delay="200">
               <h3>MilanoSport Aceh</h3>
               <div className="info-item">
                 <MapPin size={20} />
@@ -332,27 +244,21 @@ const Home: React.FC = () => {
                 <Clock size={20} />
                 <span>Senin - Minggu: 06:00 - 23:00 WIB</span>
               </div>
-              <button
-                onClick={() => window.open("https://maps.google.com", "_blank")}
-                className="location-btn"
-              >
+              <button onClick={() => window.open("https://www.google.com/maps?q=5.5483467,95.3216313", "_blank")} className="location-btn" aria-label="Buka lokasi MilanoSport di Google Maps">
                 Buka di Google Maps
               </button>
             </div>
 
-            <div
-              className="location-map glass-panel"
-              data-aos="fade-left"
-              data-aos-delay="300"
-            >
+            <div className="location-map glass-panel" data-aos="fade-left" data-aos-delay="300">
               <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3971.0247033992654!2d95.3216313!3d5.5483467!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNcKwMzInNTQuMCJOIDk1wrAxOScxNy45IkU!5e0!3m2!1sen!2sid!4v1625641234567!5m2!1sen!2sid"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3971.0247033992654!2d95.31944431476893!3d5.548346796036615!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x304037b8e6388eb9%3A0x5c3d0e8e0e8e0e8e!2sJl.%20T.%20Nyak%20Arief%2C%20Banda%20Aceh%2C%20Aceh!5e0!3m2!1sen!2sid!4v1733961234567!5m2!1sen!2sid"
                 width="100%"
                 height="450"
                 style={{ border: 0, borderRadius: "30px" }}
                 allowFullScreen
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
+                title="Lokasi MilanoSport Aceh"
               />
             </div>
           </div>
@@ -366,13 +272,8 @@ const Home: React.FC = () => {
             <h2 className="section-title-feature1">Tentang Kami</h2>
           </div>
           <p className="about-description">
-            Milano Sport adalah pusat olahraga modern yang berkomitmen untuk
-            menyediakan fasilitas olahraga berkualitas tinggi bagi komunitas.
-            Didirikan dengan visi untuk mempromosikan gaya hidup sehat dan
-            aktif, kami menawarkan berbagai lapangan olahraga yang dirawat
-            dengan baik untuk mini soccer, futsal, badminton, dan padel. Dengan
-            lokasi yang strategis dan fasilitas modern, Milano Sport menjadi
-            tempat ideal bagi para penggemar olahraga untuk berlatih,
+            Milano Sport adalah pusat olahraga modern yang berkomitmen untuk menyediakan fasilitas olahraga berkualitas tinggi bagi komunitas. Didirikan dengan visi untuk mempromosikan gaya hidup sehat dan aktif, kami menawarkan berbagai
+            lapangan olahraga yang dirawat dengan baik untuk mini soccer, futsal, badminton, dan padel. Dengan lokasi yang strategis dan fasilitas modern, Milano Sport menjadi tempat ideal bagi para penggemar olahraga untuk berlatih,
             berkompetisi, dan membangun komunitas yang sehat dan energik.
           </p>
         </div>
@@ -388,10 +289,7 @@ const Home: React.FC = () => {
                 </div>
                 <span className="footer-brand">MilanoSport</span>
               </div>
-              <p className="footer-desc">
-                Platform reservasi lapangan olahraga terpercaya di Aceh. Nikmati
-                kemudahan booking kapan saja, di mana saja.
-              </p>
+              <p className="footer-desc">Platform reservasi lapangan olahraga terpercaya di Aceh. Nikmati kemudahan booking kapan saja, di mana saja.</p>
             </div>
 
             <div className="footer-column">
@@ -418,10 +316,7 @@ const Home: React.FC = () => {
           </div>
 
           <div className="footer-bottom">
-            <p>
-              &copy; 2025 MilanoSport. Reservasi Lapangan Aceh. All rights
-              reserved.
-            </p>
+            <p>&copy; 2025 MilanoSport. Reservasi Lapangan Aceh. All rights reserved.</p>
           </div>
         </div>
       </footer>
