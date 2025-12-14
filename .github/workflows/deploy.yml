@@ -3,18 +3,8 @@ name: CI/CD Pipeline - MilanoSport Frontend
 on:
   push:
     branches:
-      - main
       - master
-      # Feature Branches - Dashboard Admin
       - feat_dashboardadmin/29-11-2025
-      - feat_admindashboard/03-10-2025
-      # Feature Branches - Authentication & Profile
-      - feat_authentifikasi/2-10-2025
-      - feat_profil/02-10-2025
-      # Fix Branches
-      - fix_home/1-10-2025
-      # Backup Branch
-      - backup/push-2025-10-04
   pull_request:
     branches:
       - main
@@ -38,62 +28,14 @@ jobs:
       - name: 📦 Install Dependencies
         run: npm ci
 
-      - name: 🔍 Run Linter
-        run: npm run lint
-        continue-on-error: true
-
       - name: 🏗️ Build Application
         run: npm run build
         env:
           NODE_ENV: production
-          # Uncomment setelah ada backend URL
-          # VITE_API_URL: ${{ secrets.VITE_API_URL }}
+          VITE_API_BASE_URL: https://milano-sport-backend.vercel.app/api
 
       - name: ✅ Build Success
-        run: echo "✅ Build completed successfully!"
+        run: echo "✅ Build completed successfully! Deployment handled by Vercel Dashboard."
 
-      # 📤 DEPLOYMENT SECTION (Uncomment setelah siap deploy)
-      # - name: 🚀 Deploy to Vercel
-      #   uses: amondnet/vercel-action@v25
-      #   with:
-      #     vercel-token: ${{ secrets.VERCEL_TOKEN }}
-      #     vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
-      #     vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
-      #     vercel-args: '--prod'
-
-      # ATAU Deploy ke Netlify
-      # - name: 🚀 Deploy to Netlify
-      #   uses: nwtgck/actions-netlify@v3.0
-      #   with:
-      #     publish-dir: './dist'
-      #     production-branch: main
-      #     github-token: ${{ secrets.GITHUB_TOKEN }}
-      #     deploy-message: "Deploy from GitHub Actions"
-      #   env:
-      #     NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-      #     NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
-
-  # Job untuk cek kualitas code (opsional)
-  code-quality:
-    name: Code Quality Check
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: 📥 Checkout Repository
-        uses: actions/checkout@v4
-
-      - name: 🟢 Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: "18"
-          cache: "npm"
-
-      - name: 📦 Install Dependencies
-        run: npm ci
-
-      - name: 📊 Check TypeScript Types
-        run: npx tsc --noEmit
-        continue-on-error: true
-
-      - name: ✅ Quality Check Complete
-        run: echo "✅ Code quality check completed!"
+      # Note: Deployment otomatis di-handle oleh Vercel Dashboard
+      # Setiap push ke branch main/master akan otomatis trigger deploy di Vercel
