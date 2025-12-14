@@ -22,7 +22,6 @@ import AdminHome from "./pages/Admin/AdminHome";
 import BookingsList from "./pages/Admin/BookingsList";
 import UsersManagement from "./pages/Admin/UsersManagement";
 import FinanceManagement from "./pages/Admin/FinanceManagement";
-import ActivityLogs from "./pages/Admin/ActivityLogs";
 
 // Layout component that includes Navbar
 const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -123,7 +122,6 @@ const App: React.FC = () => {
             </div>
           }
         />
-        <Route path="logs" element={<ActivityLogs />} />
       </Route>
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />

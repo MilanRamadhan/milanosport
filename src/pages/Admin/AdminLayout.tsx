@@ -76,14 +76,6 @@ const AdminLayout: React.FC = () => {
             <i className="icon">▲</i>
             {!sidebarCollapsed && <span>Analytics</span>}
           </NavLink>
-
-          <NavLink
-            to="/admin/logs"
-            className={({ isActive }) => `nav-item ${isActive ? "active" : ""}`}
-          >
-            <i className="icon">≡</i>
-            {!sidebarCollapsed && <span>Activity Logs</span>}
-          </NavLink>
         </nav>
 
         <div className="sidebar-footer">
