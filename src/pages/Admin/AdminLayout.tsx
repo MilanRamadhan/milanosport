@@ -22,57 +22,35 @@ const AdminLayout: React.FC = () => {
         <div className="sidebar-header">
           <div className="admin-logo">
             <span className="logo-icon">M</span>
-            {!sidebarCollapsed && (
-              <span className="logo-text">MilanoSport Admin</span>
-            )}
+            {!sidebarCollapsed && <span className="logo-text"> Admin</span>}
           </div>
-          <button
-            className="sidebar-toggle"
-            onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
-            aria-label="Toggle sidebar"
-          >
-            {sidebarCollapsed ? "→" : "←"}
+          <button className="sidebar-toggle" onClick={() => setSidebarCollapsed(!sidebarCollapsed)} aria-label="Toggle sidebar">
+            <span className={`arrow ${sidebarCollapsed ? "collapsed" : ""}`}>❮</span>
           </button>
         </div>
 
         <nav className="sidebar-nav">
-          <NavLink
-            to="/admin"
-            end
-            className={({ isActive }) => `nav-item ${isActive ? "active" : ""}`}
-          >
+          <NavLink to="/admin" end className={({ isActive }) => `nav-item ${isActive ? "active" : ""}`}>
             <i className="icon">■</i>
             {!sidebarCollapsed && <span>Dashboard</span>}
           </NavLink>
 
-          <NavLink
-            to="/admin/bookings"
-            className={({ isActive }) => `nav-item ${isActive ? "active" : ""}`}
-          >
+          <NavLink to="/admin/bookings" className={({ isActive }) => `nav-item ${isActive ? "active" : ""}`}>
             <i className="icon">☰</i>
             {!sidebarCollapsed && <span>Bookings</span>}
           </NavLink>
 
-          <NavLink
-            to="/admin/users"
-            className={({ isActive }) => `nav-item ${isActive ? "active" : ""}`}
-          >
+          <NavLink to="/admin/users" className={({ isActive }) => `nav-item ${isActive ? "active" : ""}`}>
             <i className="icon">◉</i>
             {!sidebarCollapsed && <span>Users</span>}
           </NavLink>
 
-          <NavLink
-            to="/admin/finance"
-            className={({ isActive }) => `nav-item ${isActive ? "active" : ""}`}
-          >
+          <NavLink to="/admin/finance" className={({ isActive }) => `nav-item ${isActive ? "active" : ""}`}>
             <i className="icon">$</i>
             {!sidebarCollapsed && <span>Finance</span>}
           </NavLink>
 
-          <NavLink
-            to="/admin/analytics"
-            className={({ isActive }) => `nav-item ${isActive ? "active" : ""}`}
-          >
+          <NavLink to="/admin/analytics" className={({ isActive }) => `nav-item ${isActive ? "active" : ""}`}>
             <i className="icon">▲</i>
             {!sidebarCollapsed && <span>Analytics</span>}
           </NavLink>

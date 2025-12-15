@@ -1,14 +1,25 @@
-/* Admin Layout Styles */
+html,
+body {
+  width: 100%;
+  overflow-x: hidden !important;
+}
+
+#root {
+  width: 100%;
+  overflow-x: hidden;
+}
+
 .admin-layout {
   display: flex;
   min-height: 100vh;
   background: #f5f7fa;
+  overflow-x: hidden; /* FIX: cegah geser horizontal gara2 toggle */
 }
 
 /* Sidebar */
 .admin-sidebar {
   width: 260px;
-  background:    #1a4134;
+  background: #1a4134;
   color: white;
   display: flex;
   flex-direction: column;
@@ -16,6 +27,7 @@
   position: fixed;
   height: 100vh;
   overflow-y: auto;
+  overflow-x: visible; /* biar toggle boleh “keluar” */
   box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
   z-index: 1000;
 }
@@ -27,6 +39,7 @@
 .sidebar-header {
   padding: 20px;
   display: flex;
+  position: relative;
   align-items: center;
   justify-content: space-between;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
@@ -58,18 +71,45 @@
 }
 
 .sidebar-toggle {
-  background: rgba(255, 255, 255, 0.1);
-  border: none;
-  color: white;
-  width: 30px;
-  height: 30px;
-  border-radius: 6px;
+  position: absolute;
+  top: 18px;
+  right: 12px; /* FIX: jangan negatif / jangan translate keluar */
+  width: 36px;
+  height: 36px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: #fff;
+  display: grid;
+  place-items: center;
   cursor: pointer;
-  transition: all 0.3s;
+  z-index: 2000;
+  transition: background 0.2s ease, transform 0.2s ease;
 }
 
 .sidebar-toggle:hover {
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.18);
+}
+.sidebar-toggle:active {
+  transform: scale(0.96);
+}
+
+/* Arrow */
+.arrow {
+  font-size: 14px;
+  line-height: 1;
+  transition: transform 0.25s ease;
+}
+
+.arrow.collapsed {
+  transform: rotate(180deg);
+}
+
+/* FIX: selector yg bener untuk collapsed */
+.admin-sidebar.collapsed .sidebar-toggle {
+  transform: translateX(0); /* saat collapsed, tombol masuk ke dalam */
 }
 
 .sidebar-nav {
@@ -127,17 +167,20 @@
   border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-/* Main Content */
+/* =========================
+   Main Content
+   ========================= */
 .admin-main {
   flex: 1;
   margin-left: 260px;
   display: flex;
   flex-direction: column;
   transition: margin-left 0.3s ease;
+  min-width: 0; /* FIX: penting untuk flex biar gak maksa melebar */
 }
 
 .admin-sidebar.collapsed ~ .admin-main {
-  margin-left: 70px;
+  margin-left: 80px; /* FIX: samain dengan width collapsed */
 }
 
 /* Top Bar */
@@ -207,12 +250,25 @@
   padding: 30px;
   flex: 1;
   overflow-y: auto;
+  min-width: 0; /* FIX: biar konten gak memaksa overflow */
 }
 
-/* Responsive */
+/* Optional: kalau ada tabel panjang, bungkus table pakai class ini */
+.table-wrap {
+  overflow-x: auto;
+  max-width: 100%;
+}
+
+/* =========================
+   Responsive
+   ========================= */
 @media (max-width: 768px) {
   .admin-sidebar {
     width: 70px;
+  }
+
+  .admin-sidebar.collapsed {
+    width: 60px;
   }
 
   .admin-sidebar .logo-text,
@@ -222,6 +278,10 @@
 
   .admin-main {
     margin-left: 70px;
+  }
+
+  .admin-sidebar.collapsed ~ .admin-main {
+    margin-left: 60px;
   }
 
   .admin-topbar {
@@ -235,17 +295,15 @@
   .admin-content {
     padding: 20px;
   }
+
+  /* di mobile, tombol toggle jangan setengah keluar biar aman */
+  .sidebar-toggle {
+    transform: translateX(0);
+    right: 10px;
+  }
 }
 
 @media (max-width: 480px) {
-  .admin-sidebar {
-    width: 60px;
-  }
-
-  .admin-main {
-    margin-left: 60px;
-  }
-
   .admin-user-info {
     display: none;
   }

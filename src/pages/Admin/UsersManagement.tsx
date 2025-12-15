@@ -29,24 +29,8 @@ const UsersManagement: React.FC = () => {
     }
   };
 
-  const handleToggleRole = async (userId: string) => {
-    if (window.confirm("Apakah Anda yakin ingin mengubah role user ini?")) {
-      try {
-        await adminApi.toggleUserRole(userId);
-        alert("Role user berhasil diubah");
-        fetchUsers();
-      } catch (err: any) {
-        alert(err.message || "Gagal mengubah role user");
-      }
-    }
-  };
-
   const handleDeleteUser = async (userId: string) => {
-    if (
-      window.confirm(
-        "Apakah Anda yakin ingin menghapus user ini? Tindakan ini tidak dapat dibatalkan."
-      )
-    ) {
+    if (window.confirm("Apakah Anda yakin ingin menghapus user ini? Tindakan ini tidak dapat dibatalkan.")) {
       try {
         await adminApi.deleteUser(userId);
         alert("User berhasil dihapus");
@@ -69,15 +53,9 @@ const UsersManagement: React.FC = () => {
   };
 
   const filteredUsers = users.filter((user) => {
-    const roleMatch =
-      roleFilter === "all" ||
-      (roleFilter === "admin" && user.role === true) ||
-      (roleFilter === "user" && user.role === false);
+    const roleMatch = roleFilter === "all" || (roleFilter === "admin" && user.role === true) || (roleFilter === "user" && user.role === false);
 
-    const searchMatch =
-      searchTerm === "" ||
-      user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      user.email.toLowerCase().includes(searchTerm.toLowerCase());
+    const searchMatch = searchTerm === "" || user.name.toLowerCase().includes(searchTerm.toLowerCase()) || user.email.toLowerCase().includes(searchTerm.toLowerCase());
 
     return roleMatch && searchMatch;
   });
@@ -108,9 +86,7 @@ const UsersManagement: React.FC = () => {
       <div className="page-header">
         <div>
           <h2>Users Management</h2>
-          <p className="subtitle">
-            Manage all registered users and their roles
-          </p>
+          <p className="subtitle">Manage all registered users and their roles</p>
         </div>
         <button onClick={fetchUsers} className="btn-refresh">
           ↻ Refresh
@@ -137,19 +113,9 @@ const UsersManagement: React.FC = () => {
 
       {/* Filters */}
       <div className="filters-section">
-        <input
-          type="text"
-          placeholder="Search by name or email..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          className="search-input"
-        />
+        <input type="text" placeholder="Search by name or email..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} className="search-input" />
 
-        <select
-          value={roleFilter}
-          onChange={(e) => setRoleFilter(e.target.value as any)}
-          className="filter-select"
-        >
+        <select value={roleFilter} onChange={(e) => setRoleFilter(e.target.value as any)} className="filter-select">
           <option value="all">All Roles</option>
           <option value="admin">Admin Only</option>
           <option value="user">Users Only</option>
@@ -184,13 +150,8 @@ const UsersManagement: React.FC = () => {
           <tbody>
             {filteredUsers.length === 0 ? (
               <tr>
-                <td
-                  colSpan={6}
-                  style={{ textAlign: "center", padding: "40px" }}
-                >
-                  {searchTerm || roleFilter !== "all"
-                    ? "No users match your filters"
-                    : "No users found"}
+                <td colSpan={6} style={{ textAlign: "center", padding: "40px" }}>
+                  {searchTerm || roleFilter !== "all" ? "No users match your filters" : "No users found"}
                 </td>
               </tr>
             ) : (
@@ -203,35 +164,16 @@ const UsersManagement: React.FC = () => {
                   </td>
                   <td>{user.email}</td>
                   <td>
-                    <span
-                      className={`badge role-${user.role ? "admin" : "user"}`}
-                    >
-                      {user.role ? "Admin" : "User"}
-                    </span>
+                    <span className={`badge role-${user.role ? "admin" : "user"}`}>{user.role ? "Admin" : "User"}</span>
                   </td>
                   <td>{formatDate(user.createdAt)}</td>
                   <td>{formatDate(user.updatedAt)}</td>
                   <td>
                     <div className="action-buttons">
-                      <button
-                        onClick={() => openModal(user)}
-                        className="btn-action view"
-                        title="View Details"
-                      >
+                      <button onClick={() => openModal(user)} className="btn-action view" title="View Details">
                         ▸
                       </button>
-                      <button
-                        onClick={() => handleToggleRole(user._id)}
-                        className="btn-action toggle"
-                        title="Toggle Role"
-                      >
-                        ↻
-                      </button>
-                      <button
-                        onClick={() => handleDeleteUser(user._id)}
-                        className="btn-action delete"
-                        title="Delete User"
-                      >
+                      <button onClick={() => handleDeleteUser(user._id)} className="btn-action delete" title="Delete User">
                         ×
                       </button>
                     </div>
@@ -256,9 +198,7 @@ const UsersManagement: React.FC = () => {
 
             <div className="modal-body">
               <div className="user-detail-card">
-                <div className="user-avatar">
-                  {selectedUser.name.charAt(0).toUpperCase()}
-                </div>
+                <div className="user-avatar">{selectedUser.name.charAt(0).toUpperCase()}</div>
 
                 <div className="detail-section">
                   <h3>Personal Information</h3>
@@ -272,13 +212,7 @@ const UsersManagement: React.FC = () => {
                   </div>
                   <div className="detail-row">
                     <span className="label">Role:</span>
-                    <span
-                      className={`badge role-${
-                        selectedUser.role ? "admin" : "user"
-                      }`}
-                    >
-                      {selectedUser.role ? "Admin" : "User"}
-                    </span>
+                    <span className={`badge role-${selectedUser.role ? "admin" : "user"}`}>{selectedUser.role ? "Admin" : "User"}</span>
                   </div>
                   <div className="detail-row">
                     <span className="label">User ID:</span>
@@ -292,29 +226,16 @@ const UsersManagement: React.FC = () => {
                   <h3>Account Information</h3>
                   <div className="detail-row">
                     <span className="label">Registered:</span>
-                    <span className="value">
-                      {formatDate(selectedUser.createdAt)}
-                    </span>
+                    <span className="value">{formatDate(selectedUser.createdAt)}</span>
                   </div>
                   <div className="detail-row">
                     <span className="label">Last Updated:</span>
-                    <span className="value">
-                      {formatDate(selectedUser.updatedAt)}
-                    </span>
+                    <span className="value">{formatDate(selectedUser.updatedAt)}</span>
                   </div>
                 </div>
 
                 <div className="modal-actions">
-                  <button
-                    onClick={() => handleToggleRole(selectedUser._id)}
-                    className="btn-modal-action toggle"
-                  >
-                    {selectedUser.role ? "Demote to User" : "Promote to Admin"}
-                  </button>
-                  <button
-                    onClick={() => handleDeleteUser(selectedUser._id)}
-                    className="btn-modal-action delete"
-                  >
+                  <button onClick={() => handleDeleteUser(selectedUser._id)} className="btn-modal-action delete">
                     Delete User
                   </button>
                 </div>

@@ -22,6 +22,7 @@ import AdminHome from "./pages/Admin/AdminHome";
 import BookingsList from "./pages/Admin/BookingsList";
 import UsersManagement from "./pages/Admin/UsersManagement";
 import FinanceManagement from "./pages/Admin/FinanceManagement";
+import Analytics from "./pages/Admin/Analytics.tsx";
 
 // Layout component that includes Navbar
 const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -114,14 +115,7 @@ const App: React.FC = () => {
         <Route path="bookings" element={<BookingsList />} />
         <Route path="users" element={<UsersManagement />} />
         <Route path="finance" element={<FinanceManagement />} />
-        <Route
-          path="analytics"
-          element={
-            <div style={{ padding: "40px", textAlign: "center" }}>
-              Analytics page - Coming soon
-            </div>
-          }
-        />
+        <Route path="analytics" element={<Analytics />} />
       </Route>
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />

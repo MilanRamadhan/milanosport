@@ -6,13 +6,9 @@ const FinanceManagement: React.FC = () => {
   const [records, setRecords] = useState<FinanceRecord[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [typeFilter, setTypeFilter] = useState<"all" | "income" | "expense">(
-    "all"
-  );
+  const [typeFilter, setTypeFilter] = useState<"all" | "income" | "expense">("all");
   const [showModal, setShowModal] = useState(false);
-  const [editingRecord, setEditingRecord] = useState<FinanceRecord | null>(
-    null
-  );
+  const [editingRecord, setEditingRecord] = useState<FinanceRecord | null>(null);
 
   // Form state
   const [formData, setFormData] = useState({
@@ -37,6 +33,24 @@ const FinanceManagement: React.FC = () => {
     } catch (err: any) {
       setError(err.message || "Gagal mengambil data finance");
       console.error("Error fetching finance records:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleSyncBookings = async () => {
+    if (!window.confirm("Sync semua booking yang sudah paid ke finance records? Ini akan memproses semua booking lama yang belum tercatat.")) {
+      return;
+    }
+
+    try {
+      setLoading(true);
+      const response = await adminApi.syncBookingsToFinance();
+      alert(`Sync berhasil! ${response.syncedCount} booking tercatat, ${response.skippedCount} sudah ada sebelumnya.`);
+      fetchRecords(); // Refresh the list
+    } catch (err: any) {
+      alert(err.message || "Gagal melakukan sync");
+      console.error("Error syncing bookings:", err);
     } finally {
       setLoading(false);
     }
@@ -104,12 +118,8 @@ const FinanceManagement: React.FC = () => {
     return record.type === typeFilter;
   });
 
-  const totalIncome = records
-    .filter((r) => r.type === "income")
-    .reduce((sum, r) => sum + r.amount, 0);
-  const totalExpense = records
-    .filter((r) => r.type === "expense")
-    .reduce((sum, r) => sum + r.amount, 0);
+  const totalIncome = records.filter((r) => r.type === "income").reduce((sum, r) => sum + r.amount, 0);
+  const totalExpense = records.filter((r) => r.type === "expense").reduce((sum, r) => sum + r.amount, 0);
   const netProfit = totalIncome - totalExpense;
 
   const formatCurrency = (amount: number) => {
@@ -143,9 +153,14 @@ const FinanceManagement: React.FC = () => {
           <h2>Finance Management</h2>
           <p className="subtitle">Track income and expenses</p>
         </div>
-        <button onClick={() => openModal()} className="btn-add">
-          + Add Record
-        </button>
+        <div className="header-actions">
+          <button onClick={handleSyncBookings} className="btn-sync">
+            🔄 Sync Bookings
+          </button>
+          <button onClick={() => openModal()} className="btn-add">
+            + Add Record
+          </button>
+        </div>
       </div>
 
       {error && <div className="error-message">{error}</div>}
@@ -168,11 +183,7 @@ const FinanceManagement: React.FC = () => {
           </div>
         </div>
 
-        <div
-          className={`stat-card profit ${
-            netProfit >= 0 ? "positive" : "negative"
-          }`}
-        >
+        <div className={`stat-card profit ${netProfit >= 0 ? "positive" : "negative"}`}>
           <div className="stat-icon">{netProfit >= 0 ? "▲" : "▼"}</div>
           <div className="stat-info">
             <h3>{formatCurrency(netProfit)}</h3>
@@ -183,11 +194,7 @@ const FinanceManagement: React.FC = () => {
 
       {/* Filters */}
       <div className="filters-section">
-        <select
-          value={typeFilter}
-          onChange={(e) => setTypeFilter(e.target.value as any)}
-          className="filter-select"
-        >
+        <select value={typeFilter} onChange={(e) => setTypeFilter(e.target.value as any)} className="filter-select">
           <option value="all">All Types</option>
           <option value="income">Income Only</option>
           <option value="expense">Expense Only</option>
@@ -213,10 +220,7 @@ const FinanceManagement: React.FC = () => {
           <tbody>
             {filteredRecords.length === 0 ? (
               <tr>
-                <td
-                  colSpan={6}
-                  style={{ textAlign: "center", padding: "40px" }}
-                >
+                <td colSpan={6} style={{ textAlign: "center", padding: "40px" }}>
                   No finance records found
                 </td>
               </tr>
@@ -225,29 +229,19 @@ const FinanceManagement: React.FC = () => {
                 <tr key={record._id}>
                   <td>{formatDate(record.date)}</td>
                   <td>
-                    <span className={`badge type-${record.type}`}>
-                      {record.type}
-                    </span>
+                    <span className={`badge type-${record.type}`}>{record.type}</span>
                   </td>
                   <td>{record.category}</td>
                   <td>{record.description}</td>
                   <td>
-                    <span className={`amount ${record.type}`}>
-                      {formatCurrency(record.amount)}
-                    </span>
+                    <span className={`amount ${record.type}`}>{formatCurrency(record.amount)}</span>
                   </td>
                   <td>
                     <div className="action-buttons">
-                      <button
-                        onClick={() => openModal(record)}
-                        className="btn-action edit"
-                      >
+                      <button onClick={() => openModal(record)} className="btn-action edit">
                         ✎
                       </button>
-                      <button
-                        onClick={() => handleDelete(record._id)}
-                        className="btn-action delete"
-                      >
+                      <button onClick={() => handleDelete(record._id)} className="btn-action delete">
                         ×
                       </button>
                     </div>
@@ -291,15 +285,7 @@ const FinanceManagement: React.FC = () => {
 
                 <div className="form-group">
                   <label>Category</label>
-                  <input
-                    type="text"
-                    value={formData.category}
-                    onChange={(e) =>
-                      setFormData({ ...formData, category: e.target.value })
-                    }
-                    placeholder="e.g., Booking Payment, Maintenance"
-                    required
-                  />
+                  <input type="text" value={formData.category} onChange={(e) => setFormData({ ...formData, category: e.target.value })} placeholder="e.g., Booking Payment, Maintenance" required />
                 </div>
 
                 <div className="form-group">
@@ -321,35 +307,16 @@ const FinanceManagement: React.FC = () => {
 
                 <div className="form-group">
                   <label>Date</label>
-                  <input
-                    type="date"
-                    value={formData.date}
-                    onChange={(e) =>
-                      setFormData({ ...formData, date: e.target.value })
-                    }
-                    required
-                  />
+                  <input type="date" value={formData.date} onChange={(e) => setFormData({ ...formData, date: e.target.value })} required />
                 </div>
 
                 <div className="form-group">
                   <label>Description</label>
-                  <textarea
-                    value={formData.description}
-                    onChange={(e) =>
-                      setFormData({ ...formData, description: e.target.value })
-                    }
-                    placeholder="Description..."
-                    rows={3}
-                    required
-                  />
+                  <textarea value={formData.description} onChange={(e) => setFormData({ ...formData, description: e.target.value })} placeholder="Description..." rows={3} required />
                 </div>
 
                 <div className="form-actions">
-                  <button
-                    type="button"
-                    onClick={closeModal}
-                    className="btn-cancel"
-                  >
+                  <button type="button" onClick={closeModal} className="btn-cancel">
                     Cancel
                   </button>
                   <button type="submit" className="btn-submit">
