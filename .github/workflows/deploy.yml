@@ -3,13 +3,7 @@ name: CI/CD Pipeline - MilanoSport Frontend
 on:
   push:
     branches:
-      - master
-      - feat_dashboardadmin/29-11-2025
-      - backup/push-2025-10-04
-      - feat_admindashboard/03-10-2025
-      - feat_authentifikasi/2-10-2025
-      - feat_profil/02-10-2025
-      - fix_home/1-10-2025
+      - "**"
   pull_request:
     branches:
       - master
