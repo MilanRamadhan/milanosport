@@ -141,6 +141,16 @@ export const bookingApi = {
       throw new Error(error.response?.data?.message || "Gagal mengubah status pembayaran");
     }
   },
+
+  // Get booked slots for a field on a specific date
+  getBookedSlots: async (fieldId: string, date: string): Promise<{ status: number; data: { startTime: string; endTime: string }[]; message: string }> => {
+    try {
+      const response = await api.get(`/bookings/booked-slots?fieldId=${fieldId}&date=${date}`);
+      return response.data;
+    } catch (error: any) {
+      throw new Error(error.response?.data?.message || "Gagal mengambil slot yang sudah dibooking");
+    }
+  },
 };
 
 // Utility functions for time calculations

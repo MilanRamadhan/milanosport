@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { fieldApi, type Field } from "../../api/fieldApi";
+import StepIndicator from "../../components/common/StepIndicator";
 import "./Step1_FieldSelection.css";
 
 interface FieldType {
@@ -199,6 +200,8 @@ const Step1_FieldSelection: React.FC = () => {
 
   return (
     <div className="field-selection-container">
+      <StepIndicator currentStep={1} />
+
       <div className="field-header">
         <h1 className="field-title">Pilih Lapangan Favorit Anda</h1>
         <p className="field-subtitle">Fasilitas olahraga premium dengan teknologi terdepan di Aceh. Nikmati pengalaman bermain yang tak terlupakan dengan standar internasional.</p>

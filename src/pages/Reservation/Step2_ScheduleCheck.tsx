@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { timeUtils } from "../../api/bookingApi";
 import { fieldApi, type Field } from "../../api/fieldApi";
+import StepIndicator from "../../components/common/StepIndicator";
 import "./Step2_ScheduleCheck.css";
 
 interface TimeSlot {
@@ -34,11 +35,36 @@ const Step2_ScheduleCheck: React.FC = () => {
   const [fields, setFields] = useState<Field[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [availableTimeSlots, setAvailableTimeSlots] = useState<TimeSlot[]>([]);
+  const [bookedSlots, setBookedSlots] = useState<{ startTime: string; endTime: string }[]>([]);
 
   // Function to calculate End Time
   const calculateEndTime = (startTime: string, duration: number): string => {
     return timeUtils.calculateEndTime(startTime, duration);
   };
+
+  // Fetch booked slots when date and field change
+  useEffect(() => {
+    const fetchBookedSlots = async () => {
+      if (!selectedDate || !currentField) {
+        setBookedSlots([]);
+        return;
+      }
+
+      try {
+        // Find field details to get field ID
+        const fieldDetails = fields.find((f) => f.name === currentField || f._id === currentField || f.sport === currentField);
+        if (!fieldDetails) return;
+
+        const response = await bookingApi.getBookedSlots(fieldDetails._id, selectedDate);
+        setBookedSlots(response.data);
+      } catch (error) {
+        console.error("Error fetching booked slots:", error);
+        setBookedSlots([]);
+      }
+    };
+
+    fetchBookedSlots();
+  }, [selectedDate, currentField, fields]);
 
   // Fetch fields from backend
   useEffect(() => {
@@ -106,9 +132,9 @@ const Step2_ScheduleCheck: React.FC = () => {
         }
 
         // Check if time slot conflicts with booked slots
-        const isBooked = bookedSlots?.some((booked: any) => {
-          const bookedStart = timeUtils.timeToMinutes(booked.start);
-          const bookedEnd = timeUtils.timeToMinutes(booked.end);
+        const isBooked = bookedSlots.some((booked) => {
+          const bookedStart = timeUtils.timeToMinutes(booked.startTime);
+          const bookedEnd = timeUtils.timeToMinutes(booked.endTime);
           return minutes >= bookedStart && minutes < bookedEnd;
         });
 
@@ -207,6 +233,8 @@ const Step2_ScheduleCheck: React.FC = () => {
 
   return (
     <div className="schedule-container">
+      <StepIndicator currentStep={2} />
+
       <div className="schedule-header">
         <button className="back-button" onClick={handleBack}>
           Kembali

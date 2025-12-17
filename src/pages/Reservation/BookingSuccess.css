@@ -1,0 +1,429 @@
+.booking-success-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 2rem 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.success-container {
+  max-width: 600px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* Success Icon */
+.success-icon-wrapper {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  animation: iconPop 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+@keyframes iconPop {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.success-icon {
+  display: inline-block;
+}
+
+/* Success Message */
+.success-message {
+  text-align: center;
+  color: white;
+  margin-bottom: 2rem;
+  animation: fadeInUp 0.8s ease-out 0.2s both;
+}
+
+.success-message h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.success-message p {
+  font-size: 1rem;
+  opacity: 0.9;
+  line-height: 1.5;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Booking ID Card */
+.booking-id-card {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  border-radius: 12px;
+  padding: 1rem;
+  text-align: center;
+  margin-bottom: 1.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  animation: fadeInUp 0.8s ease-out 0.3s both;
+}
+
+.id-label {
+  display: block;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.875rem;
+  margin-bottom: 0.5rem;
+}
+
+.booking-id {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: white;
+  letter-spacing: 2px;
+  font-family: "Courier New", monospace;
+}
+
+/* Status Card */
+.status-card {
+  background: white;
+  border-radius: 16px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  animation: fadeInUp 0.8s ease-out 0.4s both;
+}
+
+.status-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.status-icon {
+  font-size: 2rem;
+}
+
+.status-info h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+  color: #333;
+}
+
+.status-info p {
+  font-size: 0.875rem;
+  color: #666;
+}
+
+/* Countdown Timer */
+.countdown-timer {
+  background: #fff3e0;
+  border-radius: 12px;
+  padding: 1rem;
+  text-align: center;
+}
+
+.timer-label {
+  font-size: 0.875rem;
+  color: #ef6c00;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+.timer-display {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #e65100;
+  font-family: "Courier New", monospace;
+  margin-bottom: 0.75rem;
+}
+
+.timer-progress {
+  width: 100%;
+  height: 8px;
+  background: #ffccbc;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.timer-progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, #ff6f00, #ff9800);
+  transition: width 1s linear;
+  border-radius: 4px;
+}
+
+/* Booking Details Card */
+.booking-details-card {
+  background: white;
+  border-radius: 16px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  animation: fadeInUp 0.8s ease-out 0.5s both;
+}
+
+.booking-details-card h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  color: #333;
+}
+
+.detail-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.detail-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.detail-item:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.detail-label {
+  font-size: 0.875rem;
+  color: #666;
+  font-weight: 500;
+}
+
+.detail-value {
+  text-align: right;
+  font-weight: 600;
+  color: #333;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.detail-value small {
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: #999;
+  margin-top: 0.25rem;
+}
+
+.detail-item.highlight {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 1rem;
+  border-radius: 12px;
+  border-bottom: none;
+  margin-top: 0.5rem;
+}
+
+.detail-item.highlight .detail-label,
+.detail-item.highlight .detail-value {
+  color: white;
+}
+
+.detail-value.price {
+  font-size: 1.5rem;
+}
+
+/* Payment Instructions */
+.payment-instructions {
+  background: white;
+  border-radius: 16px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  animation: fadeInUp 0.8s ease-out 0.6s both;
+}
+
+.payment-instructions h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: #333;
+}
+
+.payment-instructions ol {
+  padding-left: 1.5rem;
+  line-height: 1.8;
+  color: #555;
+}
+
+.payment-instructions li {
+  margin-bottom: 0.75rem;
+}
+
+.bank-account {
+  background: #f8f9fa;
+  border-radius: 12px;
+  padding: 1rem;
+  margin: 1rem 0;
+  border-left: 4px solid #43a047;
+}
+
+.bank-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.bank-info strong {
+  color: #333;
+  font-size: 1rem;
+}
+
+.bank-info code {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #43a047;
+  font-family: "Courier New", monospace;
+  letter-spacing: 2px;
+}
+
+.bank-info span {
+  font-size: 0.875rem;
+  color: #666;
+}
+
+/* Action Buttons */
+.action-buttons {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  animation: fadeInUp 0.8s ease-out 0.7s both;
+}
+
+.action-buttons button {
+  flex: 1;
+  padding: 1rem 1.5rem;
+  border-radius: 12px;
+  border: none;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(102, 126, 234, 0.4);
+}
+
+.btn-secondary {
+  background: white;
+  color: #667eea;
+  border: 2px solid #667eea;
+}
+
+.btn-secondary:hover {
+  background: #f8f9ff;
+  transform: translateY(-2px);
+}
+
+/* Info Box */
+.info-box {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  border-radius: 12px;
+  padding: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  animation: fadeInUp 0.8s ease-out 0.8s both;
+}
+
+.info-box p {
+  font-size: 0.875rem;
+  color: white;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.info-box a {
+  color: #ffd54f;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.info-box a:hover {
+  text-decoration: underline;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .booking-success-page {
+    padding: 1rem 0.75rem;
+  }
+
+  .success-message h1 {
+    font-size: 1.5rem;
+  }
+
+  .success-message p {
+    font-size: 0.875rem;
+  }
+
+  .booking-id {
+    font-size: 1.25rem;
+  }
+
+  .timer-display {
+    font-size: 2rem;
+  }
+
+  .detail-value.price {
+    font-size: 1.25rem;
+  }
+
+  .action-buttons {
+    flex-direction: column;
+  }
+
+  .bank-info code {
+    font-size: 1.25rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .success-message h1 {
+    font-size: 1.25rem;
+  }
+
+  .status-info h3 {
+    font-size: 1rem;
+  }
+
+  .booking-details-card h3,
+  .payment-instructions h3 {
+    font-size: 1rem;
+  }
+
+  .detail-item {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .detail-value {
+    align-items: flex-start;
+    text-align: left;
+  }
+}
