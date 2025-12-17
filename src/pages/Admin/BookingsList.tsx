@@ -6,12 +6,8 @@ const BookingsList: React.FC = () => {
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [filter, setFilter] = useState<
-    "all" | "pending" | "active" | "cancelled"
-  >("all");
-  const [paymentFilter, setPaymentFilter] = useState<
-    "all" | "pending" | "paid" | "failed"
-  >("all");
+  const [filter, setFilter] = useState<"all" | "pending" | "active" | "cancelled">("all");
+  const [paymentFilter, setPaymentFilter] = useState<"all" | "pending" | "paid" | "failed">("all");
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedBooking, setSelectedBooking] = useState<Booking | null>(null);
   const [showModal, setShowModal] = useState(false);
@@ -34,10 +30,7 @@ const BookingsList: React.FC = () => {
     }
   };
 
-  const handleUpdatePaymentStatus = async (
-    bookingId: string,
-    newStatus: "pending" | "paid" | "failed"
-  ) => {
+  const handleUpdatePaymentStatus = async (bookingId: string, newStatus: "pending" | "paid" | "failed") => {
     try {
       await bookingApi.updatePaymentStatus(bookingId, newStatus);
       alert(`Status pembayaran berhasil diubah menjadi ${newStatus}`);
@@ -61,13 +54,8 @@ const BookingsList: React.FC = () => {
 
   const filteredBookings = bookings.filter((booking) => {
     const statusMatch = filter === "all" || booking.status === filter;
-    const paymentMatch =
-      paymentFilter === "all" || booking.paymentStatus === paymentFilter;
-    const searchMatch =
-      searchTerm === "" ||
-      booking.customerName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      booking.customerPhone.includes(searchTerm) ||
-      booking._id.toLowerCase().includes(searchTerm.toLowerCase());
+    const paymentMatch = paymentFilter === "all" || booking.paymentStatus === paymentFilter;
+    const searchMatch = searchTerm === "" || booking.customerName.toLowerCase().includes(searchTerm.toLowerCase()) || booking.customerPhone.includes(searchTerm) || booking._id.toLowerCase().includes(searchTerm.toLowerCase());
 
     return statusMatch && paymentMatch && searchMatch;
   });
@@ -106,14 +94,14 @@ const BookingsList: React.FC = () => {
   const calculateDuration = (startTime: string, endTime: string): string => {
     const [startHour, startMin] = startTime.split(":").map(Number);
     const [endHour, endMin] = endTime.split(":").map(Number);
-    
+
     const startInMinutes = startHour * 60 + startMin;
     const endInMinutes = endHour * 60 + endMin;
     const durationInMinutes = endInMinutes - startInMinutes;
-    
+
     const hours = Math.floor(durationInMinutes / 60);
     const minutes = durationInMinutes % 60;
-    
+
     if (minutes === 0) {
       return `${hours} jam`;
     } else {
@@ -134,9 +122,7 @@ const BookingsList: React.FC = () => {
       <div className="page-header">
         <div>
           <h2>Bookings Management</h2>
-          <p className="subtitle">
-            Manage all customer bookings and payment status
-          </p>
+          <p className="subtitle">Manage all customer bookings and payment status</p>
         </div>
         <button onClick={fetchAllBookings} className="btn-refresh">
           ↻ Refresh
@@ -153,50 +139,30 @@ const BookingsList: React.FC = () => {
         </div>
         <div className="stat-item pending">
           <span className="stat-label">Pending</span>
-          <span className="stat-value">
-            {bookings.filter((b) => b.status === "pending").length}
-          </span>
+          <span className="stat-value">{bookings.filter((b) => b.status === "pending").length}</span>
         </div>
         <div className="stat-item active">
           <span className="stat-label">Active</span>
-          <span className="stat-value">
-            {bookings.filter((b) => b.status === "active").length}
-          </span>
+          <span className="stat-value">{bookings.filter((b) => b.status === "active").length}</span>
         </div>
         <div className="stat-item cancelled">
           <span className="stat-label">Cancelled</span>
-          <span className="stat-value">
-            {bookings.filter((b) => b.status === "cancelled").length}
-          </span>
+          <span className="stat-value">{bookings.filter((b) => b.status === "cancelled").length}</span>
         </div>
       </div>
 
       {/* Filters */}
       <div className="filters-section">
-        <input
-          type="text"
-          placeholder="Search by name, phone, or ID..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          className="search-input"
-        />
+        <input type="text" placeholder="Search by name, phone, or ID..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} className="search-input" />
 
-        <select
-          value={filter}
-          onChange={(e) => setFilter(e.target.value as any)}
-          className="filter-select"
-        >
+        <select value={filter} onChange={(e) => setFilter(e.target.value as any)} className="filter-select">
           <option value="all">All Status</option>
           <option value="pending">Pending</option>
           <option value="active">Active</option>
           <option value="cancelled">Cancelled</option>
         </select>
 
-        <select
-          value={paymentFilter}
-          onChange={(e) => setPaymentFilter(e.target.value as any)}
-          className="filter-select"
-        >
+        <select value={paymentFilter} onChange={(e) => setPaymentFilter(e.target.value as any)} className="filter-select">
           <option value="all">All Payment</option>
           <option value="pending">Payment Pending</option>
           <option value="paid">Paid</option>
@@ -236,13 +202,8 @@ const BookingsList: React.FC = () => {
           <tbody>
             {filteredBookings.length === 0 ? (
               <tr>
-                <td
-                  colSpan={9}
-                  style={{ textAlign: "center", padding: "40px" }}
-                >
-                  {searchTerm || filter !== "all" || paymentFilter !== "all"
-                    ? "No bookings match your filters"
-                    : "No bookings available"}
+                <td colSpan={9} style={{ textAlign: "center", padding: "40px" }}>
+                  {searchTerm || filter !== "all" || paymentFilter !== "all" ? "No bookings match your filters" : "No bookings available"}
                 </td>
               </tr>
             ) : (
@@ -273,25 +234,16 @@ const BookingsList: React.FC = () => {
                   </td>
                   <td>{calculateDuration(booking.startTime, booking.endTime)}</td>
                   <td>
-                    <strong className="price">
-                      {formatCurrency(booking.totalPrice)}
-                    </strong>
+                    <strong className="price">{formatCurrency(booking.totalPrice)}</strong>
                   </td>
                   <td>
-                    <span className={`badge status-${booking.status}`}>
-                      {booking.status}
-                    </span>
+                    <span className={`badge status-${booking.status}`}>{booking.status}</span>
                   </td>
                   <td>
-                    <span className={`badge payment-${booking.paymentStatus}`}>
-                      {booking.paymentStatus}
-                    </span>
+                    <span className={`badge payment-${booking.paymentStatus}`}>{booking.paymentStatus}</span>
                   </td>
                   <td>
-                    <button
-                      onClick={() => openModal(booking)}
-                      className="btn-action"
-                    >
+                    <button onClick={() => openModal(booking)} className="btn-action">
                       View
                     </button>
                   </td>
@@ -319,21 +271,15 @@ const BookingsList: React.FC = () => {
                   <h3>Customer Information</h3>
                   <div className="detail-row">
                     <span className="label">Name:</span>
-                    <span className="value">
-                      {selectedBooking.customerName}
-                    </span>
+                    <span className="value">{selectedBooking.customerName}</span>
                   </div>
                   <div className="detail-row">
                     <span className="label">Phone:</span>
-                    <span className="value">
-                      {selectedBooking.customerPhone}
-                    </span>
+                    <span className="value">{selectedBooking.customerPhone}</span>
                   </div>
                   <div className="detail-row">
                     <span className="label">Email:</span>
-                    <span className="value">
-                      {getUserEmail(selectedBooking.userId) || "-"}
-                    </span>
+                    <span className="value">{getUserEmail(selectedBooking.userId) || "-"}</span>
                   </div>
                 </div>
 
@@ -341,15 +287,11 @@ const BookingsList: React.FC = () => {
                   <h3>Field Information</h3>
                   <div className="detail-row">
                     <span className="label">Field:</span>
-                    <span className="value">
-                      {getFieldName(selectedBooking.fieldId)}
-                    </span>
+                    <span className="value">{getFieldName(selectedBooking.fieldId)}</span>
                   </div>
                   <div className="detail-row">
                     <span className="label">Sport:</span>
-                    <span className="value">
-                      {getFieldSport(selectedBooking.fieldId)}
-                    </span>
+                    <span className="value">{getFieldSport(selectedBooking.fieldId)}</span>
                   </div>
                 </div>
 
@@ -357,9 +299,7 @@ const BookingsList: React.FC = () => {
                   <h3>Booking Information</h3>
                   <div className="detail-row">
                     <span className="label">Date:</span>
-                    <span className="value">
-                      {formatDate(selectedBooking.date)}
-                    </span>
+                    <span className="value">{formatDate(selectedBooking.date)}</span>
                   </div>
                   <div className="detail-row">
                     <span className="label">Time:</span>
@@ -369,21 +309,15 @@ const BookingsList: React.FC = () => {
                   </div>
                   <div className="detail-row">
                     <span className="label">Duration:</span>
-                    <span className="value">
-                      {calculateDuration(selectedBooking.startTime, selectedBooking.endTime)}
-                    </span>
+                    <span className="value">{calculateDuration(selectedBooking.startTime, selectedBooking.endTime)}</span>
                   </div>
                   <div className="detail-row">
                     <span className="label">Total Price:</span>
-                    <span className="value price">
-                      {formatCurrency(selectedBooking.totalPrice)}
-                    </span>
+                    <span className="value price">{formatCurrency(selectedBooking.totalPrice)}</span>
                   </div>
                   <div className="detail-row">
                     <span className="label">Notes:</span>
-                    <span className="value">
-                      {selectedBooking.notes || "-"}
-                    </span>
+                    <span className="value">{selectedBooking.notes || "-"}</span>
                   </div>
                 </div>
 
@@ -391,17 +325,11 @@ const BookingsList: React.FC = () => {
                   <h3>Status</h3>
                   <div className="detail-row">
                     <span className="label">Booking Status:</span>
-                    <span className={`badge status-${selectedBooking.status}`}>
-                      {selectedBooking.status}
-                    </span>
+                    <span className={`badge status-${selectedBooking.status}`}>{selectedBooking.status}</span>
                   </div>
                   <div className="detail-row">
                     <span className="label">Payment Status:</span>
-                    <span
-                      className={`badge payment-${selectedBooking.paymentStatus}`}
-                    >
-                      {selectedBooking.paymentStatus}
-                    </span>
+                    <span className={`badge payment-${selectedBooking.paymentStatus}`}>{selectedBooking.paymentStatus}</span>
                   </div>
                 </div>
               </div>
@@ -409,17 +337,8 @@ const BookingsList: React.FC = () => {
               {selectedBooking.proofOfPayment && (
                 <div className="detail-section full-width">
                   <h3>Proof of Payment</h3>
-                  <img
-                    src={selectedBooking.proofOfPayment}
-                    alt="Payment Proof"
-                    className="payment-proof-img"
-                  />
-                  <a
-                    href={selectedBooking.proofOfPayment}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="btn-view-full"
-                  >
+                  <img src={selectedBooking.proofOfPayment} alt="Payment Proof" className="payment-proof-img" />
+                  <a href={selectedBooking.proofOfPayment} target="_blank" rel="noopener noreferrer" className="btn-view-full">
                     View Full Image
                   </a>
                 </div>
@@ -428,31 +347,13 @@ const BookingsList: React.FC = () => {
               <div className="detail-section full-width">
                 <h3>Update Payment Status</h3>
                 <div className="payment-actions">
-                  <button
-                    onClick={() =>
-                      handleUpdatePaymentStatus(selectedBooking._id, "paid")
-                    }
-                    className="btn-payment-action success"
-                    disabled={selectedBooking.paymentStatus === "paid"}
-                  >
+                  <button onClick={() => handleUpdatePaymentStatus(selectedBooking._id, "paid")} className="btn-payment-action success" disabled={selectedBooking.paymentStatus === "paid"}>
                     ✓ Approve Payment
                   </button>
-                  <button
-                    onClick={() =>
-                      handleUpdatePaymentStatus(selectedBooking._id, "failed")
-                    }
-                    className="btn-payment-action danger"
-                    disabled={selectedBooking.paymentStatus === "failed"}
-                  >
+                  <button onClick={() => handleUpdatePaymentStatus(selectedBooking._id, "failed")} className="btn-payment-action danger" disabled={selectedBooking.paymentStatus === "failed"}>
                     ✗ Reject Payment
                   </button>
-                  <button
-                    onClick={() =>
-                      handleUpdatePaymentStatus(selectedBooking._id, "pending")
-                    }
-                    className="btn-payment-action warning"
-                    disabled={selectedBooking.paymentStatus === "pending"}
-                  >
+                  <button onClick={() => handleUpdatePaymentStatus(selectedBooking._id, "pending")} className="btn-payment-action warning" disabled={selectedBooking.paymentStatus === "pending"}>
                     ⟳ Set Pending
                   </button>
                 </div>
