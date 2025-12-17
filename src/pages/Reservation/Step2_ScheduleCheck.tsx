@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { bookingApi, timeUtils } from "../../api/bookingApi";
+import { timeUtils } from "../../api/bookingApi";
 import { fieldApi, type Field } from "../../api/fieldApi";
 import StepIndicator from "../../components/common/StepIndicator";
 import "./Step2_ScheduleCheck.css";
