@@ -334,15 +334,21 @@ const BookingsList: React.FC = () => {
                 </div>
               </div>
 
-              {selectedBooking.proofOfPayment && (
-                <div className="detail-section full-width">
-                  <h3>Proof of Payment</h3>
-                  <img src={selectedBooking.proofOfPayment} alt="Payment Proof" className="payment-proof-img" />
-                  <a href={selectedBooking.proofOfPayment} target="_blank" rel="noopener noreferrer" className="btn-view-full">
-                    View Full Image
-                  </a>
-                </div>
-              )}
+              <div className="detail-section full-width">
+                <h3>Bukti Transfer</h3>
+                {selectedBooking.proofOfPayment ? (
+                  <>
+                    <div className="payment-proof-container">
+                      <img src={selectedBooking.proofOfPayment} alt="Payment Proof" className="payment-proof-img" />
+                    </div>
+                    <a href={selectedBooking.proofOfPayment} target="_blank" rel="noopener noreferrer" className="btn-view-full">
+                      Lihat Gambar Penuh
+                    </a>
+                  </>
+                ) : (
+                  <p className="no-proof">Belum ada bukti transfer diupload</p>
+                )}
+              </div>
 
               <div className="detail-section full-width">
                 <h3>Update Payment Status</h3>

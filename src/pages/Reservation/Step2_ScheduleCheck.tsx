@@ -264,21 +264,41 @@ const Step2_ScheduleCheck: React.FC = () => {
           <div className="time-section">
             <h2 className="section-title">Pilih Jam</h2>
             <div className="time-grid">
-              {availableTimeSlots.map((slot) => (
-                <button
-                  key={slot.time}
-                  className={`time-slot ${!slot.available ? "unavailable" : ""} ${selectedTime === slot.time ? "selected" : ""}`}
-                  onClick={() => slot.available && handleTimeSelect(slot.time)}
-                  disabled={!slot.available}
-                >
-                  <span className="time-text">{slot.time}</span>
-                  <span className="price-multiplier">
-                    {slot.price === 0.8 && <span className="discount">-20%</span>}
-                    {slot.price === 1.2 && <span className="peak">Peak</span>}
-                    {slot.price === 1 && <span className="normal">Normal</span>}
-                  </span>
-                </button>
-              ))}
+              {availableTimeSlots.map((slot) => {
+                const now = new Date();
+                const selectedDateObj = new Date(selectedDate);
+                const isToday = selectedDateObj.toDateString() === now.toDateString();
+
+                // Check if time has passed for today
+                const [slotHour, slotMinute] = slot.time.split(":").map(Number);
+                const slotTime = new Date(selectedDateObj);
+                slotTime.setHours(slotHour, slotMinute, 0, 0);
+                const isPast = isToday && slotTime < now;
+
+                return (
+                  <button
+                    key={slot.time}
+                    className={`time-slot ${!slot.available || isPast ? "unavailable" : ""} ${selectedTime === slot.time ? "selected" : ""}`}
+                    onClick={() => slot.available && !isPast && handleTimeSelect(slot.time)}
+                    disabled={!slot.available || isPast}
+                  >
+                    <span className="time-text">{slot.time}</span>
+                    <span className="price-multiplier">
+                      {isPast ? (
+                        <span className="past">Terlewat</span>
+                      ) : !slot.available ? (
+                        <span className="unavailable-text">Penuh</span>
+                      ) : slot.price === 0.8 ? (
+                        <span className="discount">-20%</span>
+                      ) : slot.price === 1.2 ? (
+                        <span className="peak">Peak</span>
+                      ) : (
+                        <span className="normal">Normal</span>
+                      )}
+                    </span>
+                  </button>
+                );
+              })}
             </div>
             {availableTimeSlots.length === 0 && <p className="no-slots-message">Tidak ada jadwal tersedia untuk hari ini</p>}
           </div>

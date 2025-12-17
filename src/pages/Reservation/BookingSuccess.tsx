@@ -68,122 +68,125 @@ const BookingSuccess: React.FC = () => {
   return (
     <div className="booking-success-page">
       <div className="success-container">
-        {/* Success Icon */}
-        <div className="success-icon-wrapper">
+        {/* Success Header with Icon */}
+        <div className="success-header">
           <div className="success-icon">
-            <svg width="64" height="64" viewBox="0 0 64 64" fill="none">
-              <circle cx="32" cy="32" r="32" fill="#43a047" />
-              <path d="M20 32L28 40L44 24" stroke="white" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" />
+            <svg width="80" height="80" viewBox="0 0 80 80" fill="none">
+              <circle cx="40" cy="40" r="40" fill="#43a047" />
+              <path d="M25 40L35 50L55 30" stroke="white" strokeWidth="5" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </div>
+          <h1 className="success-title">Reservasi Berhasil Dibuat!</h1>
+          <p className="success-subtitle">Terima kasih telah melakukan reservasi. Booking Anda sedang menunggu verifikasi pembayaran.</p>
         </div>
 
-        {/* Success Message */}
-        <div className="success-message">
-          <h1>Reservasi Berhasil Dibuat!</h1>
-          <p>Terima kasih telah melakukan reservasi. Booking Anda sedang menunggu verifikasi pembayaran.</p>
+        {/* Booking ID Card */}
+        <div className="info-card booking-id-section">
+          <div className="info-label">Booking ID</div>
+          <div className="booking-id">{bookingData.bookingId.slice(-12).toUpperCase()}</div>
         </div>
 
-        {/* Booking ID */}
-        <div className="booking-id-card">
-          <span className="id-label">Booking ID</span>
-          <code className="booking-id">{bookingData.bookingId.slice(-12).toUpperCase()}</code>
-        </div>
-
-        {/* Status Card */}
-        <div className="status-card">
-          <div className="status-header">
-            <div className="status-icon">⏳</div>
-            <div className="status-info">
-              <h3>Menunggu Pembayaran</h3>
-              <p>Selesaikan pembayaran sebelum booking hangus</p>
+        {/* Countdown Timer Card */}
+        <div className="info-card countdown-card">
+          <div className="countdown-header">
+            <span className="countdown-icon">⏱️</span>
+            <div>
+              <h3>Menunggu Verifikasi</h3>
+              <p>Booking akan dibatalkan otomatis jika belum dikonfirmasi</p>
             </div>
           </div>
 
           <div className="countdown-timer">
+            <div className="timer-value">{formatTime(countdown)}</div>
             <div className="timer-label">Waktu Tersisa</div>
-            <div className="timer-display">{formatTime(countdown)}</div>
-            <div className="timer-progress">
-              <div className="timer-progress-bar" style={{ width: `${(countdown / 900) * 100}%` }} />
+            <div className="progress-bar">
+              <div className="progress-fill" style={{ width: `${(countdown / 900) * 100}%` }} />
             </div>
           </div>
         </div>
 
-        {/* Booking Details */}
-        <div className="booking-details-card">
-          <h3>Detail Reservasi</h3>
-
-          <div className="detail-grid">
-            <div className="detail-item">
-              <span className="detail-label">🏟️ Lapangan</span>
-              <span className="detail-value">
-                {bookingData.fieldName}
-                <small>{bookingData.fieldSport}</small>
-              </span>
-            </div>
-
-            <div className="detail-item">
-              <span className="detail-label">📅 Tanggal</span>
-              <span className="detail-value">{formatDate(bookingData.date)}</span>
-            </div>
-
-            <div className="detail-item">
-              <span className="detail-label">⏰ Waktu</span>
-              <span className="detail-value">
-                {bookingData.startTime} - {bookingData.endTime}
-              </span>
-            </div>
-
-            <div className="detail-item">
-              <span className="detail-label">👤 Pemesan</span>
-              <span className="detail-value">
-                {bookingData.customerName}
-                <small>{bookingData.customerPhone}</small>
-              </span>
-            </div>
-
-            <div className="detail-item highlight">
-              <span className="detail-label">💰 Total Pembayaran</span>
-              <span className="detail-value price">{formatCurrency(bookingData.totalPrice)}</span>
-            </div>
-          </div>
-        </div>
-
-        {/* Payment Instructions */}
-        <div className="payment-instructions">
-          <h3>📝 Instruksi Pembayaran</h3>
-          <ol>
-            <li>
-              Transfer sejumlah <strong>{formatCurrency(bookingData.totalPrice)}</strong> ke rekening BSI berikut:
-            </li>
-            <div className="bank-account">
-              <div className="bank-info">
-                <strong>Bank Syariah Indonesia (BSI)</strong>
-                <code>1234567890</code>
-                <span>a.n. Milano Sport</span>
+        {/* Booking Details Card */}
+        <div className="info-card details-card">
+          <h3 className="card-title">Detail Reservasi</h3>
+          <div className="details-grid">
+            <div className="detail-row">
+              <span className="detail-icon">🏟️</span>
+              <div className="detail-content">
+                <div className="detail-label">Lapangan</div>
+                <div className="detail-value">{bookingData.fieldName}</div>
+                <div className="detail-sub">{bookingData.fieldSport}</div>
               </div>
             </div>
-            <li>Simpan bukti transfer Anda</li>
-            <li>Klik tombol "Upload Bukti Transfer" di bawah</li>
-            <li>Tunggu verifikasi dari admin (maksimal 1x24 jam)</li>
-          </ol>
+            <div className="detail-row">
+              <span className="detail-icon">📅</span>
+              <div className="detail-content">
+                <div className="detail-label">Tanggal</div>
+                <div className="detail-value">{formatDate(bookingData.date)}</div>
+              </div>
+            </div>
+            <div className="detail-row">
+              <span className="detail-icon">⏰</span>
+              <div className="detail-content">
+                <div className="detail-label">Waktu</div>
+                <div className="detail-value">
+                  {bookingData.startTime} - {bookingData.endTime}
+                </div>
+              </div>
+            </div>
+            <div className="detail-row">
+              <span className="detail-icon">👤</span>
+              <div className="detail-content">
+                <div className="detail-label">Pemesan</div>
+                <div className="detail-value">{bookingData.customerName}</div>
+                <div className="detail-sub">{bookingData.customerPhone}</div>
+              </div>
+            </div>
+          </div>
+          <div className="total-payment">
+            <span>Total Pembayaran</span>
+            <span className="total-amount">{formatCurrency(bookingData.totalPrice)}</span>
+          </div>
         </div>
 
-        {/* Action Buttons */}
-        <div className="action-buttons">
-          <button onClick={() => navigate("/my-bookings")} className="btn-secondary">
+        {/* Payment Instructions Card */}
+        <div className="info-card payment-card">
+          <h3 className="card-title">📝 Instruksi Pembayaran</h3>
+          <div className="payment-steps">
+            <div className="payment-step">
+              <div className="step-number">1</div>
+              <div className="step-content">
+                <p>
+                  Transfer sejumlah <strong>{formatCurrency(bookingData.totalPrice)}</strong> ke rekening berikut:
+                </p>
+                <div className="bank-info-box">
+                  <div className="bank-name">Bank Syariah Indonesia (BSI)</div>
+                  <div className="bank-account-number">1234567890</div>
+                  <div className="bank-holder">a.n. Milano Sport</div>
+                </div>
+              </div>
+            </div>
+            <div className="payment-step">
+              <div className="step-number">2</div>
+              <div className="step-content">
+                <p>Bukti transfer sudah berhasil diupload</p>
+              </div>
+            </div>
+            <div className="payment-step">
+              <div className="step-number">3</div>
+              <div className="step-content">
+                <p>Tunggu verifikasi dari admin (maksimal 1x24 jam)</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Action Button */}
+        <div className="action-section">
+          <button onClick={() => navigate("/my-bookings")} className="btn-primary-large">
             Lihat Riwayat Booking
           </button>
-          <button onClick={() => navigate("/my-bookings")} className="btn-primary">
-            Upload Bukti Transfer
-          </button>
-        </div>
-
-        {/* Additional Info */}
-        <div className="info-box">
-          <p>
-            <strong>💡 Perhatian:</strong> Booking Anda akan otomatis dibatalkan jika pembayaran tidak dikonfirmasi dalam 15 menit. Untuk pertanyaan lebih lanjut, hubungi kami di WhatsApp:{" "}
-            <a href="https://wa.me/6281234567890">0812-3456-7890</a>
+          <p className="info-text">
+            💡 Booking akan otomatis dibatalkan jika tidak dikonfirmasi dalam 15 menit. Untuk bantuan, hubungi <a href="https://wa.me/6281234567890">WhatsApp Kami</a>
           </p>
         </div>
       </div>

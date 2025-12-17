@@ -1,28 +1,22 @@
 /* Step1_FieldSelection.css - Clean White Design with Fresh Green Accents */
 
 .field-selection-container {
-  padding: 150px 40px 20px 40px;
-  background: transparent;
+  padding: 180px 40px 40px 40px;
+  background: #f5f7fa;
   min-height: 100vh;
-  max-height: 100vh;
-  overflow: hidden;
-  position: relative;
-  display: flex;
-  flex-direction: column;
 }
 
 /* Header Section */
 .field-header {
   text-align: center;
-  margin-bottom: 30px;
-  flex-shrink: 0;
+  margin-bottom: 3rem;
 }
 
 .field-title {
-  font-size: 2rem;
+  font-size: 2.5rem;
   font-weight: 700;
   color: #1f2937;
-  margin: 0 0 12px 0;
+  margin: 0 0 1rem 0;
   background: linear-gradient(135deg, #10b981, #059669);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -30,24 +24,21 @@
 }
 
 .field-subtitle {
-  font-size: 1rem;
+  font-size: 1.125rem;
   color: #64748b;
   margin: 0 auto;
-  max-width: 600px;
-  line-height: 1.4;
+  max-width: 700px;
+  line-height: 1.6;
   font-weight: 400;
 }
 
 /* Cards Container */
 .field-cards-container {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 16px;
-  max-width: 1400px;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+  max-width: 1200px;
   margin: 0 auto;
-  flex: 1;
-  align-content: start;
-  overflow: hidden;
 }
 
 /* Field Cards */

@@ -1,61 +1,76 @@
 .booking-success-page {
   min-height: 100vh;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: #f5f7fa;
   padding: 2rem 1rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }
 
 .success-container {
-  max-width: 600px;
+  max-width: 700px;
   width: 100%;
   margin: 0 auto;
 }
 
-/* Success Icon */
-.success-icon-wrapper {
+/* Success Header */
+.success-header {
   text-align: center;
-  margin-bottom: 1.5rem;
-  animation: iconPop 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-}
-
-@keyframes iconPop {
-  0% {
-    transform: scale(0);
-    opacity: 0;
-  }
-  50% {
-    transform: scale(1.2);
-  }
-  100% {
-    transform: scale(1);
-    opacity: 1;
-  }
+  margin-bottom: 2rem;
+  animation: fadeInDown 0.6s ease-out;
 }
 
 .success-icon {
   display: inline-block;
+  margin-bottom: 1.5rem;
+  animation: bounce 1s ease-out;
 }
 
-/* Success Message */
-.success-message {
-  text-align: center;
-  color: white;
-  margin-bottom: 2rem;
-  animation: fadeInUp 0.8s ease-out 0.2s both;
+@keyframes bounce {
+  0%,
+  20%,
+  50%,
+  80%,
+  100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-20px);
+  }
+  60% {
+    transform: translateY(-10px);
+  }
 }
 
-.success-message h1 {
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.success-title {
   font-size: 2rem;
   font-weight: 700;
+  color: #2d3748;
   margin-bottom: 0.5rem;
 }
 
-.success-message p {
+.success-subtitle {
   font-size: 1rem;
-  opacity: 0.9;
-  line-height: 1.5;
+  color: #718096;
+  line-height: 1.6;
+}
+
+/* Info Cards */
+.info-card {
+  background: white;
+  border-radius: 16px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  animation: fadeInUp 0.6s ease-out;
 }
 
 @keyframes fadeInUp {
@@ -69,316 +84,268 @@
   }
 }
 
-/* Booking ID Card */
-.booking-id-card {
-  background: rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(10px);
-  border-radius: 12px;
-  padding: 1rem;
-  text-align: center;
+.info-card .card-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #2d3748;
   margin-bottom: 1.5rem;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  animation: fadeInUp 0.8s ease-out 0.3s both;
 }
 
-.id-label {
-  display: block;
-  color: rgba(255, 255, 255, 0.8);
+/* Booking ID Section */
+.booking-id-section {
+  text-align: center;
+}
+
+.info-label {
   font-size: 0.875rem;
+  color: #718096;
   margin-bottom: 0.5rem;
+  font-weight: 500;
 }
 
 .booking-id {
-  font-size: 1.5rem;
+  font-size: 1.75rem;
   font-weight: 700;
-  color: white;
-  letter-spacing: 2px;
+  color: #667eea;
+  letter-spacing: 3px;
   font-family: "Courier New", monospace;
 }
 
-/* Status Card */
-.status-card {
-  background: white;
-  border-radius: 16px;
-  padding: 1.5rem;
-  margin-bottom: 1.5rem;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-  animation: fadeInUp 0.8s ease-out 0.4s both;
+/* Countdown Card */
+.countdown-card {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
 }
 
-.status-header {
+.countdown-header {
   display: flex;
   align-items: center;
   gap: 1rem;
   margin-bottom: 1.5rem;
 }
 
-.status-icon {
+.countdown-icon {
   font-size: 2rem;
 }
 
-.status-info h3 {
-  font-size: 1.25rem;
+.countdown-header h3 {
+  font-size: 1.125rem;
   font-weight: 600;
-  margin-bottom: 0.25rem;
-  color: #333;
+  margin: 0 0 0.25rem 0;
 }
 
-.status-info p {
+.countdown-header p {
   font-size: 0.875rem;
-  color: #666;
+  opacity: 0.9;
+  margin: 0;
 }
 
-/* Countdown Timer */
 .countdown-timer {
-  background: #fff3e0;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
   border-radius: 12px;
-  padding: 1rem;
+  padding: 1.5rem;
   text-align: center;
+}
+
+.timer-value {
+  font-size: 3rem;
+  font-weight: 700;
+  font-family: "Courier New", monospace;
+  margin-bottom: 0.5rem;
 }
 
 .timer-label {
   font-size: 0.875rem;
-  color: #ef6c00;
-  font-weight: 500;
-  margin-bottom: 0.5rem;
+  opacity: 0.9;
+  margin-bottom: 1rem;
 }
 
-.timer-display {
-  font-size: 2.5rem;
-  font-weight: 700;
-  color: #e65100;
-  font-family: "Courier New", monospace;
-  margin-bottom: 0.75rem;
-}
-
-.timer-progress {
+.progress-bar {
   width: 100%;
   height: 8px;
-  background: #ffccbc;
+  background: rgba(255, 255, 255, 0.2);
   border-radius: 4px;
   overflow: hidden;
 }
 
-.timer-progress-bar {
+.progress-fill {
   height: 100%;
-  background: linear-gradient(90deg, #ff6f00, #ff9800);
+  background: white;
   transition: width 1s linear;
   border-radius: 4px;
 }
 
-/* Booking Details Card */
-.booking-details-card {
-  background: white;
-  border-radius: 16px;
-  padding: 1.5rem;
-  margin-bottom: 1.5rem;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-  animation: fadeInUp 0.8s ease-out 0.5s both;
-}
-
-.booking-details-card h3 {
-  font-size: 1.25rem;
-  font-weight: 600;
-  margin-bottom: 1.5rem;
-  color: #333;
-}
-
-.detail-grid {
+/* Details Card */
+.details-grid {
   display: flex;
   flex-direction: column;
   gap: 1.25rem;
+  margin-bottom: 1.5rem;
 }
 
-.detail-item {
+.detail-row {
   display: flex;
-  justify-content: space-between;
   align-items: flex-start;
-  padding-bottom: 1rem;
-  border-bottom: 1px solid #f0f0f0;
+  gap: 1rem;
 }
 
-.detail-item:last-child {
-  border-bottom: none;
-  padding-bottom: 0;
+.detail-icon {
+  font-size: 1.5rem;
+  flex-shrink: 0;
+}
+
+.detail-content {
+  flex: 1;
 }
 
 .detail-label {
   font-size: 0.875rem;
-  color: #666;
-  font-weight: 500;
+  color: #718096;
+  margin-bottom: 0.25rem;
 }
 
 .detail-value {
-  text-align: right;
+  font-size: 1rem;
   font-weight: 600;
-  color: #333;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
+  color: #2d3748;
 }
 
-.detail-value small {
-  font-size: 0.75rem;
-  font-weight: 400;
-  color: #999;
+.detail-sub {
+  font-size: 0.875rem;
+  color: #a0aec0;
   margin-top: 0.25rem;
 }
 
-.detail-item.highlight {
+.total-payment {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  padding: 1rem;
   border-radius: 12px;
-  border-bottom: none;
-  margin-top: 0.5rem;
-}
-
-.detail-item.highlight .detail-label,
-.detail-item.highlight .detail-value {
   color: white;
-}
-
-.detail-value.price {
-  font-size: 1.5rem;
-}
-
-/* Payment Instructions */
-.payment-instructions {
-  background: white;
-  border-radius: 16px;
-  padding: 1.5rem;
-  margin-bottom: 1.5rem;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-  animation: fadeInUp 0.8s ease-out 0.6s both;
-}
-
-.payment-instructions h3 {
-  font-size: 1.25rem;
   font-weight: 600;
-  margin-bottom: 1rem;
-  color: #333;
 }
 
-.payment-instructions ol {
-  padding-left: 1.5rem;
-  line-height: 1.8;
-  color: #555;
+.total-amount {
+  font-size: 1.5rem;
+  font-weight: 700;
 }
 
-.payment-instructions li {
-  margin-bottom: 0.75rem;
-}
-
-.bank-account {
-  background: #f8f9fa;
-  border-radius: 12px;
-  padding: 1rem;
-  margin: 1rem 0;
-  border-left: 4px solid #43a047;
-}
-
-.bank-info {
+/* Payment Card */
+.payment-steps {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 1.5rem;
 }
 
-.bank-info strong {
-  color: #333;
-  font-size: 1rem;
+.payment-step {
+  display: flex;
+  gap: 1rem;
 }
 
-.bank-info code {
+.step-number {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.step-content {
+  flex: 1;
+}
+
+.step-content p {
+  margin: 0 0 0.75rem 0;
+  color: #4a5568;
+  line-height: 1.6;
+}
+
+.bank-info-box {
+  background: #f7fafc;
+  border-left: 4px solid #43a047;
+  border-radius: 8px;
+  padding: 1rem;
+}
+
+.bank-name {
+  font-weight: 600;
+  color: #2d3748;
+  margin-bottom: 0.5rem;
+}
+
+.bank-account-number {
   font-size: 1.5rem;
   font-weight: 700;
   color: #43a047;
   font-family: "Courier New", monospace;
   letter-spacing: 2px;
+  margin-bottom: 0.5rem;
 }
 
-.bank-info span {
+.bank-holder {
   font-size: 0.875rem;
-  color: #666;
+  color: #718096;
 }
 
-/* Action Buttons */
-.action-buttons {
-  display: flex;
-  gap: 1rem;
-  margin-bottom: 1.5rem;
-  animation: fadeInUp 0.8s ease-out 0.7s both;
+/* Action Section */
+.action-section {
+  text-align: center;
 }
 
-.action-buttons button {
-  flex: 1;
-  padding: 1rem 1.5rem;
-  border-radius: 12px;
-  border: none;
-  font-weight: 600;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.btn-primary {
+.btn-primary-large {
+  width: 100%;
+  padding: 1rem 2rem;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 1.125rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-bottom: 1rem;
 }
 
-.btn-primary:hover {
+.btn-primary-large:hover {
   transform: translateY(-2px);
   box-shadow: 0 8px 24px rgba(102, 126, 234, 0.4);
 }
 
-.btn-secondary {
-  background: white;
-  color: #667eea;
-  border: 2px solid #667eea;
-}
-
-.btn-secondary:hover {
-  background: #f8f9ff;
-  transform: translateY(-2px);
-}
-
-/* Info Box */
-.info-box {
-  background: rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(10px);
-  border-radius: 12px;
-  padding: 1rem;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  animation: fadeInUp 0.8s ease-out 0.8s both;
-}
-
-.info-box p {
+.info-text {
   font-size: 0.875rem;
-  color: white;
+  color: #718096;
   line-height: 1.6;
-  margin: 0;
 }
 
-.info-box a {
-  color: #ffd54f;
+.info-text a {
+  color: #667eea;
   text-decoration: none;
   font-weight: 600;
 }
 
-.info-box a:hover {
+.info-text a:hover {
   text-decoration: underline;
 }
 
-/* Responsive Design */
+/* Responsive */
 @media (max-width: 768px) {
   .booking-success-page {
     padding: 1rem 0.75rem;
   }
 
-  .success-message h1 {
+  .success-title {
     font-size: 1.5rem;
   }
 
-  .success-message p {
+  .success-subtitle {
     font-size: 0.875rem;
   }
 
@@ -386,44 +353,19 @@
     font-size: 1.25rem;
   }
 
-  .timer-display {
+  .timer-value {
     font-size: 2rem;
   }
 
-  .detail-value.price {
+  .total-amount {
     font-size: 1.25rem;
   }
 
-  .action-buttons {
-    flex-direction: column;
-  }
-
-  .bank-info code {
-    font-size: 1.25rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .success-message h1 {
+  .bank-account-number {
     font-size: 1.25rem;
   }
 
-  .status-info h3 {
+  .btn-primary-large {
     font-size: 1rem;
-  }
-
-  .booking-details-card h3,
-  .payment-instructions h3 {
-    font-size: 1rem;
-  }
-
-  .detail-item {
-    flex-direction: column;
-    gap: 0.5rem;
-  }
-
-  .detail-value {
-    align-items: flex-start;
-    text-align: left;
   }
 }

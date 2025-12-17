@@ -414,13 +414,29 @@
   text-align: right;
 }
 
-.payment-proof-img {
-  width: 100%;
-  max-width: 500px;
-  height: auto;
-  border-radius: 10px;
+.payment-proof-container {
   margin: 16px 0;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.payment-proof-img {
+  max-width: 100%;
+  max-height: 500px;
+  width: auto;
+  height: auto;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  border: 2px solid #e2e8f0;
+}
+
+.no-proof {
+  padding: 2rem;
+  text-align: center;
+  color: #94a3b8;
+  font-style: italic;
+  background: #f8fafc;
+  border-radius: 8px;
+  margin: 1rem 0;
 }
 
 .btn-view-full {
@@ -433,10 +449,13 @@
   font-size: 14px;
   font-weight: 500;
   transition: all 0.3s;
+  margin-top: 1rem;
 }
 
 .btn-view-full:hover {
   background: #5568d3;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
 }
 
 .payment-actions {
