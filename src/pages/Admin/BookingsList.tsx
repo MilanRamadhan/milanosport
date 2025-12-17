@@ -103,6 +103,24 @@ const BookingsList: React.FC = () => {
     return userId?.email || "";
   };
 
+  const calculateDuration = (startTime: string, endTime: string): string => {
+    const [startHour, startMin] = startTime.split(":").map(Number);
+    const [endHour, endMin] = endTime.split(":").map(Number);
+    
+    const startInMinutes = startHour * 60 + startMin;
+    const endInMinutes = endHour * 60 + endMin;
+    const durationInMinutes = endInMinutes - startInMinutes;
+    
+    const hours = Math.floor(durationInMinutes / 60);
+    const minutes = durationInMinutes % 60;
+    
+    if (minutes === 0) {
+      return `${hours} jam`;
+    } else {
+      return `${hours} jam ${minutes} menit`;
+    }
+  };
+
   if (loading) {
     return (
       <div className="bookings-page">
@@ -253,7 +271,7 @@ const BookingsList: React.FC = () => {
                       </small>
                     </div>
                   </td>
-                  <td>{booking.totalHours} jam</td>
+                  <td>{calculateDuration(booking.startTime, booking.endTime)}</td>
                   <td>
                     <strong className="price">
                       {formatCurrency(booking.totalPrice)}
@@ -352,7 +370,7 @@ const BookingsList: React.FC = () => {
                   <div className="detail-row">
                     <span className="label">Duration:</span>
                     <span className="value">
-                      {selectedBooking.totalHours} hours
+                      {calculateDuration(selectedBooking.startTime, selectedBooking.endTime)}
                     </span>
                   </div>
                   <div className="detail-row">
