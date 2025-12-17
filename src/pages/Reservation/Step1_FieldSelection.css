@@ -1,7 +1,10 @@
 /* Step1_FieldSelection.css - Clean White Design with Fresh Green Accents */
 
 .field-selection-container {
-  padding: 180px 40px 40px 40px;
+  padding-top: 120px;
+  padding-right: 2rem;
+  padding-bottom: 20px;
+  padding-left: 2rem;
   background: #f5f7fa;
   min-height: 100vh;
 }
@@ -9,7 +12,9 @@
 /* Header Section */
 .field-header {
   text-align: center;
-  margin-bottom: 3rem;
+  margin-bottom: 1rem;
+  padding-left: 0;
+  padding-right: 0;
 }
 
 .field-title {
@@ -30,6 +35,8 @@
   max-width: 700px;
   line-height: 1.6;
   font-weight: 400;
+  padding-left: 1rem;
+  padding-right: 1rem;
 }
 
 /* Cards Container */
@@ -37,8 +44,10 @@
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 24px;
-  max-width: 1200px;
-  margin: 0 auto;
+  max-width: 100%;
+  margin: 0;
+  padding-left: 0;
+  padding-right: 0;
 }
 
 /* Field Cards */
