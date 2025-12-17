@@ -141,14 +141,14 @@ const MyBookings: React.FC = () => {
   const calculateDuration = (startTime: string, endTime: string): string => {
     const [startHour, startMin] = startTime.split(":").map(Number);
     const [endHour, endMin] = endTime.split(":").map(Number);
-    
+
     const startInMinutes = startHour * 60 + startMin;
     const endInMinutes = endHour * 60 + endMin;
     const durationInMinutes = endInMinutes - startInMinutes;
-    
+
     const hours = Math.floor(durationInMinutes / 60);
     const minutes = durationInMinutes % 60;
-    
+
     if (minutes === 0) {
       return `${hours} jam`;
     } else {
