@@ -138,6 +138,24 @@ const MyBookings: React.FC = () => {
     return labels[status] || status;
   };
 
+  const calculateDuration = (startTime: string, endTime: string): string => {
+    const [startHour, startMin] = startTime.split(":").map(Number);
+    const [endHour, endMin] = endTime.split(":").map(Number);
+    
+    const startInMinutes = startHour * 60 + startMin;
+    const endInMinutes = endHour * 60 + endMin;
+    const durationInMinutes = endInMinutes - startInMinutes;
+    
+    const hours = Math.floor(durationInMinutes / 60);
+    const minutes = durationInMinutes % 60;
+    
+    if (minutes === 0) {
+      return `${hours} jam`;
+    } else {
+      return `${hours} jam ${minutes} menit`;
+    }
+  };
+
   if (loading) {
     return (
       <div className="my-bookings-container">
@@ -248,7 +266,7 @@ const MyBookings: React.FC = () => {
                     </div>
                     <div className="info-item">
                       <span className="info-label">⏱️ Durasi</span>
-                      <span className="info-value">{booking.totalHours} Jam</span>
+                      <span className="info-value">{calculateDuration(booking.startTime, booking.endTime)}</span>
                     </div>
                     <div className="info-item">
                       <span className="info-label">💰 Total Harga</span>
@@ -344,7 +362,7 @@ const MyBookings: React.FC = () => {
                   </div>
                   <div className="modal-info-item">
                     <strong>Durasi:</strong>
-                    <span>{selectedBooking.totalHours} Jam</span>
+                    <span>{calculateDuration(selectedBooking.startTime, selectedBooking.endTime)}</span>
                   </div>
                 </div>
               </div>
